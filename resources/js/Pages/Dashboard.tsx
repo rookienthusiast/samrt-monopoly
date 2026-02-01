@@ -23,10 +23,12 @@ interface Property {
 
 interface TileData {
     index: number;
-    type: 'START' | 'PROPERTY' | 'CHANCE' | 'JAIL' | 'FREE_PARKING' | 'GO_TO_JAIL' | 'TAX' | 'UTILITY';
+    type: 'START' | 'PROPERTY' | 'CHANCE' | 'JAIL' | 'FREE_PARKING' | 'GO_TO_JAIL' | 'TAX' | 'UTILITY' | 'EVENT' | 'CRISIS' | 'AUDIT' | 'ZONE';
     name: string;
+    subName?: string;
     property?: Property;
     color?: string;
+    textColor?: string;
 }
 
 interface PageProps {
@@ -35,93 +37,106 @@ interface PageProps {
 
 
 const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
-    const tiles: TileData[] = Array(40).fill(null).map((_, i) => ({
-        index: i,
-        type: 'PROPERTY',
-        name: `Land #${i}`,
-        color: 'bg-gray-200'
-    }));
+    const tiles: TileData[] = [
+        // Top Row (0-10) - Moving Right
+        { index: 0, type: 'START', name: 'Start', color: 'bg-black', textColor: 'text-black' },
+        { index: 1, type: 'PROPERTY', name: 'Apartment', subName: '(20-30 kamar)\n(1,5M - 2,5M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 2, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(Internal)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 3, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(External)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 4, type: 'PROPERTY', name: 'Pabrik Tekstil', subName: '(10M - 20M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 5, type: 'EVENT', name: 'EVENT', subName: 'Activities - \nImplementing', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 6, type: 'PROPERTY', name: 'Kopi', subName: '(Rp 250jt - 500jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 7, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment \n(Objectives)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 8, type: 'EVENT', name: 'EVENT', subName: 'Environment \n(Integrity)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 9, type: 'PROPERTY', name: 'Rumah Sakit', subName: 'Pratama\n(4M - 6M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 10, type: 'AUDIT', name: 'AUDIT', subName: '(AI governance \nAudit)', color: 'bg-black', textColor: 'text-black' },
 
-    tiles[0] = { index: 0, type: 'START', name: 'START', color: 'bg-green-100' };
-    tiles[10] = { index: 10, type: 'JAIL', name: 'JAIL', color: 'bg-gray-400' };
-    tiles[20] = { index: 20, type: 'FREE_PARKING', name: 'FREE PARK', color: 'bg-blue-100' };
-    tiles[30] = { index: 30, type: 'GO_TO_JAIL', name: 'GO TO JAIL', color: 'bg-red-100' };
+        // Right Column (11-19) - Moving Down
+        { index: 11, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment \n(Identification)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 12, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1,8M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 13, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment \n(Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 14, type: 'PROPERTY', name: 'Minimarket', subName: '(900jt - 1,5M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 15, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: \n60-90jt)', color: 'bg-black', textColor: 'text-black' },
+        { index: 16, type: 'PROPERTY', name: 'Cloud Kitchen', subName: '(300jt - 400jt)', color: 'bg-cyan-400', textColor: 'text-black' },
+        { index: 17, type: 'EVENT', name: 'EVENT', subName: 'Control Activities \n(Risk Mitigation)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 18, type: 'PROPERTY', name: 'Sewa Apartemen', subName: '(1,5 - 2M)', color: 'bg-cyan-400', textColor: 'text-black' },
+        { index: 19, type: 'EVENT', name: 'EVENT', subName: 'Control Activities \n(IT Controls)', color: 'bg-yellow-400', textColor: 'text-black' },
 
-    dbProperties.forEach(p => {
-        let slot = -1;
-        let color = 'bg-indigo-300';
+        // Bottom Row (20-30) - Moving Left
+        { index: 20, type: 'AUDIT', name: 'Pengadilan', subName: '(kasus hukum)\n(perdata - pidana)', color: 'bg-black', textColor: 'text-black' },
+        { index: 21, type: 'EVENT', name: 'EVENT', subName: 'Control Activities \n(Policies)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 22, type: 'PROPERTY', name: 'Pusat oleh-oleh', subName: '(1,3M - 1,6M)', color: 'bg-blue-400', textColor: 'text-black' },
+        { index: 23, type: 'PROPERTY', name: 'Jasa Konsultan', subName: '(500-800jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 24, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(Quality)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 25, type: 'PROPERTY', name: 'Information & \nCommunication \n(Internal)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 26, type: 'PROPERTY', name: 'Kawasan Kuliner', subName: '(2,2M - 3M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 27, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(External)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 28, type: 'ZONE', name: 'Audit Zone', subName: '(80-100jt)', color: 'bg-black', textColor: 'text-black' },
+        { index: 29, type: 'PROPERTY', name: 'Hotel Bisnis', subName: '(5-7 M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 30, type: 'CRISIS', name: 'CRISIS', subName: 'Systemic Fraud \n/ ESG Shock', color: 'bg-black', textColor: 'text-black' },
 
-        if (p.slug === 'hotel-budget') { slot = 1; color = 'bg-purple-400'; }
-        else if (p.slug === 'laundry') { slot = 3; color = 'bg-orange-400'; }
-
-        if (slot !== -1) {
-            tiles[slot] = {
-                index: slot,
-                type: 'PROPERTY',
-                name: p.name,
-                property: p,
-                color: color
-            };
-        }
-    });
+        // Left Column (31-39) - Moving Up
+        { index: 31, type: 'EVENT', name: 'EVENT', subName: 'Monitoring \n(Ongoing Evaluation)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 32, type: 'PROPERTY', name: 'Super Mall', subName: '(7 - 10M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 33, type: 'EVENT', name: 'EVENT', subName: 'Monitoring \n(Deficiency)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 34, type: 'PROPERTY', name: 'Kawasan Industri', subName: '(7-10M)', color: 'bg-gray-200', textColor: 'text-black' },
+        { index: 35, type: 'EVENT', name: 'EVENT', subName: 'Governance \nReform', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 36, type: 'PROPERTY', name: 'Pecel Ayam', subName: '(100-200jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 37, type: 'PROPERTY', name: 'Hotel Resort', subName: '(8M-12M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 38, type: 'EVENT', name: 'EVENT', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 39, type: 'PROPERTY', name: 'Laundry', subName: '(Rp 250-450jt)', color: 'bg-blue-300', textColor: 'text-black' },
+    ];
 
     return tiles;
 };
 
 
-const Dice3D = ({ value, rolling }: { value: number, rolling: boolean }) => {
-
-    const dotPositions: Record<number, string[]> = {
-        1: ['justify-center items-center'],
-        2: ['justify-between'],
-        3: ['justify-between'],
-        4: ['justify-between'],
-        5: ['justify-between'],
-        6: ['justify-between']
-    };
-
-
-    const renderDots = (val: number) => {
-        const dots = [];
-        if (val === 1) dots.push(<div key="1" className="w-3 h-3 bg-black rounded-full"></div>);
-        else if (val === 2) {
-             dots.push(<div key="1" className="w-3 h-3 bg-black rounded-full self-start"></div>);
-             dots.push(<div key="2" className="w-3 h-3 bg-black rounded-full self-end"></div>);
-        } else if (val === 3) {
-             dots.push(<div key="1" className="w-3 h-3 bg-black rounded-full self-start"></div>);
-             dots.push(<div key="2" className="w-3 h-3 bg-black rounded-full self-center"></div>);
-             dots.push(<div key="3" className="w-3 h-3 bg-black rounded-full self-end"></div>);
-        } else if (val === 4) {
-            return (
-                <div className="grid grid-cols-2 gap-1 w-full h-full p-1">
-                    <div className="w-3 h-3 bg-black rounded-full"></div><div className="w-3 h-3 bg-black rounded-full justify-self-end"></div>
-                    <div className="w-3 h-3 bg-black rounded-full self-end"></div><div className="w-3 h-3 bg-black rounded-full self-end justify-self-end"></div>
-                </div>
-            )
-        } else if (val === 5) {
-             return (
-                <div className="relative w-full h-full p-1">
-                    <div className="absolute top-1 left-1 w-3 h-3 bg-black rounded-full"></div> <div className="absolute top-1 right-1 w-3 h-3 bg-black rounded-full"></div>
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-black rounded-full"></div>
-                    <div className="absolute bottom-1 left-1 w-3 h-3 bg-black rounded-full"></div> <div className="absolute bottom-1 right-1 w-3 h-3 bg-black rounded-full"></div>
-                </div>
-            )
-        } else if (val === 6) {
-             return (
-                <div className="grid grid-cols-2 gap-0.5 w-full h-full p-1">
-                    <div className="w-3 h-3 bg-black rounded-full"></div><div className="w-3 h-3 bg-black rounded-full justify-self-end"></div>
-                    <div className="w-3 h-3 bg-black rounded-full"></div><div className="w-3 h-3 bg-black rounded-full justify-self-end"></div>
-                    <div className="w-3 h-3 bg-black rounded-full"></div><div className="w-3 h-3 bg-black rounded-full justify-self-end"></div>
-                </div>
-            )
-        }
-
-        return <div className={`flex w-full h-full p-2 ${dotPositions[val]}`}>{dots}</div>;
+const Dice3D = ({ value, rolling, transform, rotation }: { value: number, rolling: boolean, transform: string, rotation: string }) => {
+    const renderDots = (num: number) => {
+        const configurations: Record<number, number[]> = {
+            1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 3, 6, 2, 5, 8]
+        };
+        const config = configurations[num as 1 | 2 | 3 | 4 | 5 | 6] || [];
+        return (
+            <div className="grid grid-cols-3 grid-rows-3 w-full h-full p-2.5 gap-1">
+                {Array.from({ length: 9 }).map((_, i) => (
+                    <div key={i} className="flex items-center justify-center">
+                        {config.includes(i) && <div className="w-2 h-2 bg-black rounded-full shadow-inner"></div>}
+                    </div>
+                ))}
+            </div>
+        );
     };
 
     return (
-        <div className={`w-16 h-16 bg-white rounded-xl shadow-[0_5px_0_#ccc] border-2 border-gray-100 flex items-center justify-center transform transition-transform duration-500 ${rolling ? 'animate-spin' : ''}`}>
-           {renderDots(value)}
+        <div className="absolute transition-all duration-[1500ms] cubic-bezier(0.175, 0.885, 0.32, 1.275)" style={{ transform }}>
+            <div className="w-16 h-16 perspective-[1000px]">
+                {/* Standard 3D Cube (No Isometric Tilt on land) */}
+                <div
+                    className="w-full h-full relative preserve-3d transition-transform duration-[1500ms] ease-out"
+                    style={{ transform: rotation }}
+                >
+                    {[1, 6, 3, 4, 2, 5].map((num, i) => {
+                        const sideRots = [
+                            'rotateY(0deg) translateZ(32px)',
+                            'rotateY(180deg) translateZ(32px)',
+                            'rotateY(90deg) translateZ(32px)',
+                            'rotateY(-90deg) translateZ(32px)',
+                            'rotateX(90deg) translateZ(32px)',
+                            'rotateX(-90deg) translateZ(32px)',
+                        ];
+                        return (
+                            <div
+                                key={num}
+                                className="absolute inset-0 bg-white border border-gray-300 rounded-lg flex items-center justify-center shadow-[inset_0_0_15px_rgba(0,0,0,0.1)] backface-hidden"
+                                style={{ transform: sideRots[i] }}
+                            >
+                                {renderDots(num)}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
         </div>
     );
 };
@@ -129,13 +144,27 @@ const Dice3D = ({ value, rolling }: { value: number, rolling: boolean }) => {
 
 export default function Dashboard({ properties }: PageProps) {
     const [dice, setDice] = useState<[number, number]>([1, 1]);
+    const [diceTransforms, setDiceTransforms] = useState([
+        'translate(-40px, 0px) rotate(0deg)',
+        'translate(40px, 0px) rotate(0deg)'
+    ]);
+    const [diceRotations, setDiceRotations] = useState([
+        'rotateX(0deg) rotateY(0deg)',
+        'rotateX(0deg) rotateY(0deg)'
+    ]);
+    const [cumRot, setCumRot] = useState([0, 0]); // Track cumulative rotation
     const [isRolling, setIsRolling] = useState(false);
+    const [isMoving, setIsMoving] = useState(false);
+    const [showDice, setShowDice] = useState(true);
+    const [logsActive, setLogsActive] = useState(false);
     const [playerPosition, setPlayerPosition] = useState(0);
+    const [rollTotal, setRollTotal] = useState<number | null>(null);
+    const [isJumping, setIsJumping] = useState(false);
     const boardTiles = generateBoardTiles(properties);
     const [logs, setLogs] = useState<string[]>([
-        "> System Initialized...",
-        "> Welcome to Smart Monopoly V.1.0",
-        "> Market Data Loaded.",
+        "> Initializing Smart Nodes...",
+        "> Welcome Player. Market is volatile today.",
+        "> All systems operational.",
     ]);
 
     const addLog = (msg: string) => {
@@ -146,183 +175,425 @@ export default function Dashboard({ properties }: PageProps) {
     const getGridStyle = (index: number) => {
         let row = 1;
         let col = 1;
-        if (index >= 0 && index <= 10) { row = 11; col = 11 - index; }
-        else if (index >= 11 && index <= 20) { col = 1; row = 11 - (index - 10); }
-        else if (index >= 21 && index <= 30) { row = 1; col = 1 + (index - 20); }
-        else if (index >= 31 && index <= 39) { col = 11; row = 1 + (index - 30); }
+        if (index >= 0 && index <= 10) { row = 1; col = index + 1; }
+        else if (index >= 11 && index <= 20) { col = 11; row = (index - 10) + 1; }
+        else if (index >= 21 && index <= 30) { row = 11; col = 11 - (index - 20); }
+        else if (index >= 31 && index <= 39) { col = 1; row = 11 - (index - 30); }
         return { gridRow: row, gridColumn: col };
     };
 
     const rollDice = () => {
-        if (isRolling) return;
+        if (isRolling || isMoving) return;
         setIsRolling(true);
-        addLog("> Rolling dice...");
+        setShowDice(true);
+        setRollTotal(null);
+        addLog("> Requesting market move...");
 
+        const d1 = Math.floor(Math.random() * 6) + 1;
+        const d2 = Math.floor(Math.random() * 6) + 1;
+        const total = d1 + d2;
+        setDice([d1, d2]);
+
+        const getRot = (val: number, prevRot: number) => {
+            const base = { 1: [0, 0], 2: [-90, 0], 3: [0, -90], 4: [0, 90], 5: [90, 0], 6: [180, 0] }[val as 1 | 2 | 3 | 4 | 5 | 6];
+            // Use multiples of 360 for the extra spin so the final landing is perfectly flat (orthogonal)
+            const extraSpins = 3 + Math.floor(Math.random() * 2); // 3 or 4 full spins
+            const newRot = prevRot + (extraSpins * 360);
+            return {
+                str: `rotateX(${base[0] + newRot}deg) rotateY(${base[1] + newRot}deg)`,
+                val: newRot
+            };
+        };
+
+        const r1 = getRot(d1, cumRot[0]);
+        const r2 = getRot(d2, cumRot[1]);
+
+        setCumRot([r1.val, r2.val]);
+        setDiceRotations([r1.str, r2.str]);
+
+        setDiceTransforms([
+            `translate(${-120 + (Math.random() * 60)}px, ${40 + (Math.random() * 40)}px) rotate(${Math.random() * 45}deg)`,
+            `translate(${120 + (Math.random() * 60)}px, ${40 + (Math.random() * 40)}px) rotate(${Math.random() * -45}deg)`
+        ]);
+
+        // One fluid animation to final position
         setTimeout(() => {
-            const d1 = Math.floor(Math.random() * 6) + 1;
-            const d2 = Math.floor(Math.random() * 6) + 1;
-            setDice([d1, d2]);
+            setRollTotal(total);
+            setTimeout(() => {
+                setIsRolling(false);
+                animateMovement(total);
+            }, 800);
+        }, 1500);
+    };
 
-            const total = d1 + d2;
-            const newPos = (playerPosition + total) % 40;
-            setPlayerPosition(newPos);
+    const animateMovement = (steps: number) => {
+        setIsMoving(true);
+        let currentStep = 0;
 
-            addLog(`> Rolled ${total} (${d1} + ${d2}). Moving to #${newPos}`);
-            setIsRolling(false);
-        }, 800);
+        const moveInterval = setInterval(() => {
+            setIsJumping(true);
+            setTimeout(() => setIsJumping(false), 200);
+
+            setPlayerPosition(prev => {
+                const nextPos = (prev + 1) % 40;
+                currentStep++;
+
+                if (currentStep >= steps) {
+                    clearInterval(moveInterval);
+                    setIsMoving(false);
+                    addLog(`> Landed on ${boardTiles[nextPos].name}`);
+                    setTimeout(() => {
+                        setRollTotal(null);
+                    }, 500); // Reset total for next roll
+                }
+                return nextPos;
+            });
+        }, 400);
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black flex items-center justify-center p-6 font-sans text-white">
+        <div className="min-h-screen bg-[#0a0a0c] flex items-center justify-center p-1 font-sans text-white overflow-hidden">
             <Head title="Smart Monopoly" />
 
-            <div className="flex w-full max-w-[1600px] h-[95vh] gap-8">
+            {/* Background Effects */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(30,58,138,0.2),transparent_70%)]"></div>
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-30"></div>
 
-                {}
-                <div className="flex-grow relative bg-[#CDE6D0] rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden border-[12px] border-[#8B0000]">
-                    {}
-                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none"></div>
+            <div className="relative w-full h-[98vh] flex items-center justify-center px-4">
 
-                    {}
-                    <div className="absolute inset-[13%] flex flex-col items-center justify-center transform -rotate-45 opacity-15 pointer-events-none select-none">
-                        <h1 className="text-9xl font-black text-[#5C0000] tracking-tighter drop-shadow-lg">SMART</h1>
-                        <h1 className="text-8xl font-black text-[#5C0000] tracking-widest drop-shadow-md">OPOLY</h1>
-                        <p className="mt-4 text-2xl font-bold uppercase tracking-[0.5em] text-red-900">Business Simulation</p>
+                {/* Main Board Container (Original Aesthetic) */}
+                <div className="absolute inset-0 bg-[#f8f9fa] rounded-3xl shadow-[0_0_100px_rgba(0,0,0,0.5)] border-[12px] border-[#333] p-1 grid grid-rows-11 grid-cols-11 gap-1">
+
+                    {/* Center Area UI (Decorated) */}
+                    <div className="col-start-2 col-end-11 row-start-2 row-end-11 m-[2px] relative flex flex-col items-center justify-between p-6 bg-white rounded-xl border border-black/5 overflow-hidden shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)]">
+
+                        {/* Top Right Info Bar (Relocated) */}
+                        <div className="absolute top-4 right-4 z-[100] select-none">
+                            <div className="flex flex-col items-end gap-1 bg-white/60 backdrop-blur-md p-3 rounded-lg border border-black/5 shadow-sm">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-[0.6rem] font-black text-gray-500 tracking-widest uppercase">PLAYER Status:</span>
+                                    <span className="text-xl font-black text-red-700 italic">PLAYER (YOU)</span>
+                                </div>
+                                <div className="flex items-center gap-3 border-t border-black/5 pt-1 mt-1">
+                                    <span className="text-[0.6rem] font-black text-gray-500 tracking-widest uppercase">Liquidity:</span>
+                                    <span className="text-2xl font-mono font-black text-green-700">Rp 500<span className="text-sm">M</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card Placement: Reverted to 2 Large Side Columns (as per original request) */}
+                        <div className="absolute inset-x-0 inset-y-0 z-20 pointer-events-none p-12">
+
+                            {/* Left Side: 1-3 */}
+                            <div className="absolute top-1/4 left-16 flex flex-col gap-10">
+                                <div className="group rotate-[12deg] opacity-75 hover:opacity-100 transition-opacity flex items-center gap-5">
+                                    <div className="w-20 h-28 bg-blue-600 rounded-lg border-2 border-blue-400 shadow-xl relative flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-x-0 top-0 h-1/3 bg-white/20"></div>
+                                        <span className="text-[0.45rem] font-bold text-white/40 rotate-[-45deg]">EST.</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[0.75rem] font-black text-black leading-tight uppercase tracking-tight">Ethics & <br />Governance</span>
+                                        <span className="text-[0.45rem] font-bold text-blue-600">ZONA: CONTROL ENVIRONMENT</span>
+                                    </div>
+                                </div>
+                                <div className="group rotate-[6deg] opacity-75 hover:opacity-100 transition-opacity flex items-center gap-5">
+                                    <div className="w-20 h-28 bg-yellow-400 rounded-lg border-2 border-yellow-500 shadow-xl relative flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-x-0 top-0 h-1/3 bg-white/30"></div>
+                                        <span className="text-[0.45rem] font-bold text-black/20 rotate-[-45deg]">RISK.</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[0.75rem] font-black text-black leading-tight uppercase tracking-tight">Risk <br />Scenario</span>
+                                        <span className="text-[0.45rem] font-bold text-yellow-600">ZONA: RISK ASSESSMENT</span>
+                                    </div>
+                                </div>
+                                <div className="group rotate-[2deg] opacity-75 hover:opacity-100 transition-opacity flex items-center gap-5">
+                                    <div className="w-20 h-28 bg-indigo-500 rounded-lg border-2 border-indigo-400 shadow-xl relative flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-x-0 top-0 h-1/3 bg-white/20"></div>
+                                        <span className="text-[0.45rem] font-bold text-white/30 rotate-[-45deg]">CTRL.</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[0.75rem] font-black text-black leading-tight uppercase tracking-tight">Audit & <br />Control</span>
+                                        <span className="text-[0.45rem] font-bold text-indigo-600">ZONA: CONTROL ACTIVITIES</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right Side: 4-6 */}
+                            <div className="absolute top-1/4 right-16 flex flex-col gap-10 items-end">
+                                <div className="group rotate-[-12deg] opacity-75 hover:opacity-100 transition-opacity flex flex-row-reverse items-center gap-5 text-right">
+                                    <div className="w-20 h-28 bg-teal-500 rounded-lg border-2 border-teal-300 shadow-xl relative flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-x-0 top-0 h-1/3 bg-white/20"></div>
+                                        <span className="text-[0.45rem] font-bold text-white/40 rotate-[45deg]">COMM.</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[0.75rem] font-black text-black leading-tight uppercase tracking-tight">Reporting & <br />Disclosure</span>
+                                        <span className="text-[0.45rem] font-bold text-teal-600">ZONA: INFORMATION & <br />COMMUNICATION</span>
+                                    </div>
+                                </div>
+                                <div className="group rotate-[-6deg] opacity-75 hover:opacity-100 transition-opacity flex flex-row-reverse items-center gap-5 text-right">
+                                    <div className="w-20 h-28 bg-emerald-600 rounded-lg border-2 border-emerald-400 shadow-xl relative flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-x-0 top-0 h-1/3 bg-white/20"></div>
+                                        <span className="text-[0.45rem] font-bold text-white/30 rotate-[45deg]">EVAL.</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[0.75rem] font-black text-black leading-tight uppercase tracking-tight">Evaluation & <br />Improvement</span>
+                                        <span className="text-[0.45rem] font-bold text-emerald-600">ZONA: MONITORING ACTIVITIES</span>
+                                    </div>
+                                </div>
+                                <div className="group rotate-[-2deg] opacity-75 hover:opacity-100 transition-opacity flex flex-row-reverse items-center gap-5 text-right">
+                                    <div className="w-20 h-28 bg-black rounded-lg border-2 border-red-600 shadow-xl relative flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-x-0 top-0 h-1/3 bg-red-900/30"></div>
+                                        <span className="text-[0.45rem] font-bold text-red-600/40 rotate-[45deg]">FRAUD.</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[0.75rem] font-black text-black leading-tight uppercase tracking-tight">Fraud Event & <br />Investment</span>
+                                        <span className="text-[0.45rem] font-bold text-red-600 uppercase italic">ZONA: CROSS-ZONE</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Classic Monopoly Style Logo (Slanted Red Banner) */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-10">
+                            {/* Rich CEO Character Peeking */}
+                            <div className="relative mb-[-60px] ml-[240px] transform -rotate-[15deg] opacity-90 scale-125 z-0">
+                                {/* Hat */}
+                                <div className="w-16 h-12 bg-black rounded-sm relative">
+                                    <div className="absolute -bottom-1 -left-2 w-20 h-2 bg-black rounded-full"></div>
+                                    <div className="absolute bottom-2 left-0 w-full h-2 bg-red-700"></div>
+                                </div>
+                                {/* Face Area (Symbolic) */}
+                                <div className="w-12 h-10 bg-[#fce3d5] mx-auto mt-[-2px] rounded-b-xl border-x border-b border-gray-300 relative">
+                                    {/* Moustache */}
+                                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-14 h-4 bg-white rounded-full shadow-sm border border-gray-100 flex items-center justify-center">
+                                        <div className="w-0.5 h-full bg-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-red-600 px-12 py-4 border-[6px] border-white shadow-[0_15px_40px_rgba(220,38,38,0.3)] transform -rotate-[20deg] z-10">
+                                <h1 className="text-[6.5rem] font-[1000] text-white tracking-[-0.05em] leading-none drop-shadow-md">MONOPOLY</h1>
+                                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border-2 border-red-600 rounded-sm">
+                                    <span className="text-red-700 font-black tracking-[0.3em] text-xs">E-GOVERNANCE EDITION</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div className="flex flex-col items-center justify-center flex-1 w-full relative z-20 p-4">
+
+                            <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-all duration-[1000ms] ${showDice ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
+                                <Dice3D value={dice[0]} rolling={isRolling} transform={diceTransforms[0]} rotation={diceRotations[0]} />
+                                <Dice3D value={dice[1]} rolling={isRolling} transform={diceTransforms[1]} rotation={diceRotations[1]} />
+                            </div>
+
+                            <button
+                                onClick={rollDice}
+                                disabled={isRolling || isMoving}
+                                className={`
+                                    absolute bottom-2 px-12 py-3.5 rounded-xl font-black text-lg tracking-[0.4em] uppercase transition-all duration-300 transform
+                                    ${(isRolling || isMoving)
+                                        ? 'opacity-0 translate-y-10 pointer-events-none'
+                                        : 'bg-red-600 text-white hover:bg-red-500 hover:shadow-[0_10px_40px_rgba(220,38,38,0.4)] active:scale-95 border-b-[4px] border-red-900'
+                                    }
+                                `}
+                            >
+                                Roll Dice
+                            </button>
+                        </div>
+
+
+
+                        {/* Bottom Area: Terminal Logs */}
+                        {logsActive && (
+                            <div className="w-full grid grid-cols-12 gap-4 z-10 mt-auto animate-[fadeIn_0.3s_ease-out]">
+                                <div className="col-span-12 bg-black/90 rounded-xl border border-white/20 p-4 font-mono text-sm h-32 overflow-hidden relative shadow-2xl">
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-red-600 animate-pulse"></div>
+                                    <div className="space-y-1.5 h-full overflow-y-auto custom-scrollbar">
+                                        {logs.map((log, i) => (
+                                            <div key={i} className={`${i === 0 ? 'text-green-400' : 'text-gray-400'}`}>
+                                                {log}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
-                    {}
-                    <div className="absolute inset-0 grid grid-rows-11 grid-cols-11 gap-0.5 box-border p-1">
-                        {boardTiles.map((tile) => {
-                            const gridStyle = getGridStyle(tile.index);
-                            return (
-                                <div
-                                    key={tile.index}
-                                    style={gridStyle}
-                                    className={`
-                                        relative border-[0.5px] border-gray-600/30 flex flex-col justify-between
-                                        ${tile.color || 'bg-[#DBEGD6]'}
-                                        transition-all duration-300
-                                        ${tile.index === playerPosition ? 'z-20 scale-105 shadow-[0_0_20px_rgba(255,255,0,0.6)] ring-2 ring-yellow-400' : 'hover:scale-110 hover:z-10 hover:shadow-lg'}
-                                    `}
-                                >
-                                    {}
-                                    {tile.type === 'PROPERTY' && (
-                                        <div className={`h-[22%] w-full border-b border-black/20 ${tile.color}`}></div>
-                                    )}
+                    {/* Tiles Rendering */}
+                    {boardTiles.map((tile) => {
+                        const gridStyle = getGridStyle(tile.index);
+                        const isCorner = [0, 10, 20, 30].includes(tile.index);
 
-                                    {}
-                                    <div className="flex-grow flex flex-col justify-center items-center text-center p-1">
-                                        <span className="text-[0.6rem] font-bold leading-tight text-gray-800 uppercase">{tile.name}</span>
-                                        {tile.property && (
-                                            <span className="text-[0.5rem] font-mono text-gray-600 mt-1">
-                                               {}
+                        return (
+                            <div
+                                key={tile.index}
+                                style={gridStyle}
+                                className={`
+                                            relative border border-white/5 flex flex-col items-center justify-center p-1
+                                            ${tile.color || 'bg-[#15191e]'}
+                                            transition-all duration-300 group
+                                            ${tile.index === playerPosition
+                                        ? 'z-40 shadow-[0_20px_50px_rgba(0,0,0,0.6)] !bg-opacity-100 border-none'
+                                        : 'hover:scale-105 hover:z-20 hover:border-white/10'
+                                    }
+                                            ${isCorner ? 'rounded-xl' : ''}
+                                        `}
+                            >
+                                {/* Smart Monopoly Styling: Header colored bar for Name, white body for Icons */}
+                                <div className={`absolute top-0 inset-x-0 h-[22%] flex items-center justify-center ${tile.color || 'bg-gray-300'} z-10 border-b border-black/5`}>
+                                    <span className={`px-1 text-center ${isCorner ? 'text-[0.6rem] font-black' : 'text-[0.5rem] font-black'} uppercase tracking-tighter leading-none text-white drop-shadow-sm`}>
+                                        {tile.name}
+                                    </span>
+                                </div>
+                                <div className="absolute inset-0 bg-white z-0"></div>
+
+                                <div className={`flex flex-col items-center justify-center text-center w-full h-full z-20 pt-[22%] px-1 ${tile.textColor || 'text-black'}`}>
+                                    {/* Body: Icon + Subname */}
+                                    <div className="flex flex-col items-center justify-center w-full gap-2">
+                                        <div className="pointer-events-none transition-transform duration-300 group-hover:scale-110">
+                                            {tile.type === 'START' && (
+                                                <svg className="w-10 h-10 text-red-600 drop-shadow-md" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4 4V21M4 4L20 9L4 14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            )}
+                                            {(tile.color?.includes('blue') || tile.color?.includes('gray') || tile.color?.includes('cyan')) && tile.type === 'PROPERTY' && (
+                                                <svg className="w-8 h-8 text-blue-500/30 group-hover:text-blue-500/60 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M3 21H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                                    <path d="M5 21V7L13 3V21" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                                                    <path d="M19 21V11L13 7" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                                                    <rect x="7" y="10" width="2" height="2" fill="currentColor" opacity="0.5" />
+                                                    <rect x="7" y="14" width="2" height="2" fill="currentColor" opacity="0.5" />
+                                                </svg>
+                                            )}
+                                            {(tile.color?.includes('black') || tile.type === 'AUDIT' || tile.type === 'ZONE') && tile.type !== 'START' && (
+                                                <svg className="w-8 h-8 text-black/20 group-hover:text-black/40 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
+                                                </svg>
+                                            )}
+                                            {(tile.type === 'EVENT' || tile.type === 'CRISIS' || tile.name === 'EVENT') && (
+                                                <div className="relative animate-bounce-slow">
+                                                    <svg className="w-8 h-8 text-yellow-500/40 group-hover:text-yellow-500/70 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.011 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13M12 17H12.01" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {tile.subName && (
+                                            <span className="text-[0.4rem] opacity-70 font-bold leading-tight whitespace-pre-line px-1 uppercase tracking-tighter">
+                                                {tile.subName}
                                             </span>
                                         )}
                                     </div>
+                                </div>
 
-                                    {}
-                                    {tile.index === playerPosition && (
-                                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-red-600 to-red-400 border-2 border-white shadow-[0_4px_6px_rgba(0,0,0,0.4)] animate-bounce"></div>
+                                {/* Chess Pawn (Bottom-Right) */}
+                                {tile.index === playerPosition && (
+                                    <div className="absolute inset-0 flex items-end justify-end p-0.5 pointer-events-none z-50">
+                                        <div
+                                            className={`
+                                                absolute bottom-1 right-1 flex flex-col items-center transition-all duration-300 origin-bottom-right z-50
+                                                ${isJumping ? '-translate-y-15' : 'translate-y-0'}
+                                            `}
+                                            style={{
+                                                animation: 'pawnEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+                                            }}
+                                        >
+                                            <div className="relative flex flex-col items-center group" style={{ transform: 'scale(0.45)', transformOrigin: 'bottom right' }}>
+                                                {/* Magic Glow */}
+                                                <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full scale-150 animate-pulse"></div>
+
+                                                {/* High-Fidelity SVG Chess Pawn */}
+                                                <svg
+                                                    className="w-24 h-32 drop-shadow-[0_10px_15px_rgba(0,0,0,0.5)] z-10 transition-transform duration-300"
+                                                    viewBox="0 0 100 140"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <defs>
+                                                        <linearGradient id="pawnGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                            <stop offset="0%" stopColor="#60A5FA" />
+                                                            <stop offset="50%" stopColor="#2563EB" />
+                                                            <stop offset="100%" stopColor="#1E3A8A" />
+                                                        </linearGradient>
+                                                        <filter id="pawnShadow">
+                                                            <feDropShadow dx="0" dy="2" stdDeviation="1.5" floodOpacity="0.3" />
+                                                        </filter>
+                                                    </defs>
+
+                                                    {/* Bottom Base Tier */}
+                                                    <ellipse cx="50" cy="125" rx="42" ry="12" fill="#1E3A8A" fillOpacity="0.4" />
+                                                    <ellipse cx="50" cy="120" rx="40" ry="12" fill="url(#pawnGradient)" stroke="#FFFFFF33" strokeWidth="1" />
+
+                                                    {/* Upper Base Tier */}
+                                                    <ellipse cx="50" cy="110" rx="30" ry="8" fill="url(#pawnGradient)" stroke="#FFFFFF22" strokeWidth="0.5" />
+
+                                                    {/* Curved Trunk (Lower Body) */}
+                                                    <path
+                                                        d="M25 110 C 25 110, 35 60, 50 60 C 65 60, 75 110, 75 110 L 25 110 Z"
+                                                        fill="url(#pawnGradient)"
+                                                        stroke="#FFFFFF11"
+                                                        strokeWidth="0.5"
+                                                    />
+
+                                                    {/* Decorative Collar (Ring) */}
+                                                    <ellipse cx="50" cy="58" rx="18" ry="5" fill="#1D4ED8" stroke="#FFFFFF44" strokeWidth="1" filter="url(#pawnShadow)" />
+
+                                                    {/* Head (Sphere) */}
+                                                    <circle cx="50" cy="35" r="22" fill="url(#pawnGradient)" stroke="#FFFFFF33" strokeWidth="1" />
+
+                                                    {/* Specular Highlight (The "Shiny" bit) */}
+                                                    <circle cx="42" cy="28" r="7" fill="white" fillOpacity="0.4" filter="blur(2px)" />
+                                                    <ellipse cx="50" cy="118" rx="20" ry="3" fill="white" fillOpacity="0.1" filter="blur(3px)" />
+                                                </svg>
+
+                                                {/* Shadow on board */}
+                                            </div>
                                         </div>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {}
-                <div className="w-[400px] flex flex-col gap-6">
-
-                    {}
-                    <div className="relative overflow-hidden bg-slate-800/80 backdrop-blur-xl border border-slate-600 rounded-2xl p-6 shadow-2xl">
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500 rounded-full blur-[80px] opacity-40"></div>
-
-                        <div className="flex justify-between items-start mb-6">
-                            <div>
-                                <h2 className="text-sm font-bold text-blue-400 tracking-wider uppercase">Player 1</h2>
-                                <h1 className="text-3xl font-bold text-white">CEO (You)</h1>
-                            </div>
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 border-2 border-white/20 shadow-lg"></div>
-                        </div>
-
-                        <div className="space-y-4">
-                            <div className="bg-black/30 rounded-lg p-3 border border-white/5 flex justify-between items-center">
-                                <span className="text-gray-400 text-sm">CASH BALANCE</span>
-                                <span className="text-2xl font-mono font-bold text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.5)]">
-                                    Rp 500<span className="text-sm">M</span>
-                                </span>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-black/30 p-2 rounded border border-white/5 text-center">
-                                    <div className="text-xs text-gray-400 uppercase mb-1">Fatigue</div>
-                                    <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                                        <div className="bg-red-500 w-[10%] h-full"></div>
                                     </div>
-                                    <div className="text-xs text-right mt-1 text-red-400 font-mono">10%</div>
-                                </div>
-                                <div className="bg-black/30 p-2 rounded border border-white/5 text-center">
-                                    <div className="text-xs text-gray-400 uppercase mb-1">Risk Score</div>
-                                    <div className="text-lg font-bold text-yellow-500">LOW</div>
-                                </div>
+                                )}
                             </div>
-                        </div>
-                    </div>
-
-                    {}
-                    <div className="flex-grow bg-slate-800/80 backdrop-blur-xl border border-slate-600 rounded-2xl p-6 shadow-2xl flex flex-col">
-
-                        {}
-                        <div className="flex-grow bg-[#0c0c0c] rounded-lg border border-gray-700 p-4 font-mono text-xs overflow-hidden relative mb-6">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-green-500/50 shadow-[0_0_10px_#22c55e]"></div>
-                            <div className="space-y-1 h-full overflow-y-auto custom-scrollbar">
-                                {logs.map((log, i) => (
-                                    <div key={i} className={`${i === 0 ? 'text-green-400 font-bold' : 'text-gray-500'}`}>
-                                        {log}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {}
-                        <div className="flex justify-center gap-8 mb-8 perspective-[1000px]">
-                            <Dice3D value={dice[0]} rolling={isRolling} />
-                            <Dice3D value={dice[1]} rolling={isRolling} />
-                        </div>
-
-                        {}
-                        <button
-                            onClick={rollDice}
-                            disabled={isRolling}
-                            className={`
-                                group relative w-full py-4 rounded-xl font-black text-xl tracking-widest uppercase transition-all duration-200
-                                ${isRolling
-                                    ? 'bg-gray-600 cursor-not-allowed text-gray-400'
-                                    : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:scale-[1.02] active:scale-[0.98]'
-                                }
-                            `}
-                        >
-                            <span className="relative z-10 flex items-center justify-center gap-2">
-                                {isRolling ? 'ROLLING...' : 'ROLL DICE'}
-                                {!isRolling && <span className="text-2xl">🎲</span>}
-                            </span>
-                        </button>
-
-                        <div className="grid grid-cols-2 gap-3 mt-4">
-                            <button className="px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-semibold border border-slate-500 transition-colors text-gray-300">
-                                Trade Asset
-                            </button>
-                            <button className="px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-semibold border border-slate-500 transition-colors text-gray-300">
-                                Portfolio
-                            </button>
-                        </div>
-
-                    </div>
+                        );
+                    })}
                 </div>
-
             </div>
-        </div>
+            <style>{`
+                @keyframes pawnEnter {
+                    0% { transform: translateY(-40px) scale(0.45); opacity: 0; }
+                    100% { transform: translateY(0) scale(0.45); opacity: 1; }
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes floatUpFadeOut {
+                    0% { transform: translate(-50%, 0); opacity: 0; }
+                    20% { transform: translate(-50%, -20px); opacity: 1; }
+                    100% { transform: translate(-50%, -100px); opacity: 0; }
+                }
+                @keyframes crystalFloat {
+                    0%, 100% { transform: translateY(0) rotateY(0deg); }
+                    50% { transform: translateY(-15px) rotateY(180deg); }
+                }
+                .preserve-3d { transform-style: preserve-3d; }
+                .backface-hidden { backface-visibility: hidden; }
+                .dice-bounce-ease { 
+                    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+                }
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 4px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: rgba(0,0,0,0.1);
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(255,100,100,0.3);
+                    border-radius: 10px;
+                }
+            `}</style>
+        </div >
     );
 }
