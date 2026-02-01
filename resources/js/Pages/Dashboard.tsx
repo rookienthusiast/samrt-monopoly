@@ -39,52 +39,52 @@ interface PageProps {
 const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
     const tiles: TileData[] = [
         // Top Row (0-10) - Moving Right
-        { index: 0, type: 'START', name: 'Start', color: 'bg-black', textColor: 'text-black' },
-        { index: 1, type: 'PROPERTY', name: 'Apartment', subName: '(20-30 kamar) (1,5M - 2,5M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 2, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Internal)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 3, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (External)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 4, type: 'PROPERTY', name: 'Pabrik Tekstil', subName: '(10M - 20M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 5, type: 'EVENT', name: 'EVENT', subName: 'Activities - Implementing', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 6, type: 'PROPERTY', name: 'Kopi', subName: '(Rp 250jt - 500jt)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 7, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Objectives)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 8, type: 'EVENT', name: 'EVENT', subName: 'Environment (Integrity)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 9, type: 'PROPERTY', name: 'Rumah Sakit', subName: 'Pratama (4M - 6M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 10, type: 'AUDIT', name: 'AUDIT', subName: '(AI governance Audit)', color: 'bg-black', textColor: 'text-black' },
+        { index: 0, type: 'START', name: 'Start', color: 'bg-black', textColor: 'text-white' },
+        { index: 1, type: 'PROPERTY', name: 'Hotel Budget', subName: '(20-30 kamar) (Rp 2.5M - 4M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 2, type: 'EVENT', name: 'EVENT', subName: 'Control Environment (Integrity & Ethical Values)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 3, type: 'EVENT', name: 'EVENT', subName: 'Control Environment (Independent Oversight)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 4, type: 'PROPERTY', name: 'Restoran menengah', subName: '(Rp 700jt - 1.2M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 5, type: 'PROPERTY', name: 'Pabrik Tekstil', subName: '(10M - 20M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 6, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Implementation)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 7, type: 'PROPERTY', name: 'Warung Kopi', subName: '(Rp 200jt - 350jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 8, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Objective Setting)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 9, type: 'PROPERTY', name: 'Rumah Sakit', subName: 'Pratama (4M - 6M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 10, type: 'AUDIT', name: 'AUDIT', subName: '(IA Governance Audit)', color: 'bg-black', textColor: 'text-white' },
 
         // Right Column (11-19) - Moving Down
-        { index: 11, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Identification)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 12, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1,8M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 11, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Risk Identification)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 12, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1.8M)', color: 'bg-blue-600', textColor: 'text-black' },
         { index: 13, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 14, type: 'PROPERTY', name: 'Minimarket', subName: '(900jt - 1,5M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 15, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: 60-90jt)', color: 'bg-black', textColor: 'text-black' },
-        { index: 16, type: 'PROPERTY', name: 'Cloud Kitchen', subName: '(300jt - 400jt)', color: 'bg-cyan-400', textColor: 'text-black' },
+        { index: 14, type: 'PROPERTY', name: 'Minimarket', subName: '(900jt - 1.5M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 15, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: 60-90jt)', color: 'bg-black', textColor: 'text-white' },
+        { index: 16, type: 'PROPERTY', name: 'Cloud Kitchen', subName: '(300jt - 400jt)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 17, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Risk Mitigation)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 18, type: 'PROPERTY', name: 'Sewa Apartemen', subName: '(1,5 - 2M)', color: 'bg-cyan-400', textColor: 'text-black' },
+        { index: 18, type: 'PROPERTY', name: 'Sewa Apartemen', subName: '(1.5M - 2M)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 19, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (IT Controls)', color: 'bg-yellow-400', textColor: 'text-black' },
 
         // Bottom Row (20-30) - Moving Left
-        { index: 20, type: 'AUDIT', name: 'Pengadilan', subName: '(kasus hukum) (perdata - pidana)', color: 'bg-black', textColor: 'text-black' },
-        { index: 21, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Policies)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 22, type: 'PROPERTY', name: 'Pusat oleh-oleh', subName: '(1,3M - 1,6M)', color: 'bg-blue-400', textColor: 'text-black' },
-        { index: 23, type: 'PROPERTY', name: 'Jasa Konsultan', subName: '(500-800jt)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 24, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Quality)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 25, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Special)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 26, type: 'PROPERTY', name: 'Kawasan Kuliner', subName: '(2,2M - 3M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 27, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (External)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 28, type: 'ZONE', name: 'Audit Zone', subName: '(80-100jt)', color: 'bg-black', textColor: 'text-black' },
-        { index: 29, type: 'PROPERTY', name: 'Hotel Bisnis', subName: '(5-7 M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 30, type: 'CRISIS', name: 'CRISIS', subName: 'Systemic Fraud / ESG Shock', color: 'bg-black', textColor: 'text-black' },
+        { index: 20, type: 'AUDIT', name: 'Pengadilan', subName: '(kasus hukum) (perdata - pidana)', color: 'bg-black', textColor: 'text-white' },
+        { index: 21, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Policies & Procedures)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 22, type: 'PROPERTY', name: 'Pusat oleh-oleh', subName: '(1.3M - 1.6M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 23, type: 'PROPERTY', name: 'Jasa Konsultan', subName: '(500 - 800jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 24, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Internal Communication)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 25, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Quality Information)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 26, type: 'PROPERTY', name: 'Kawasan Kuliner', subName: '(2.2M - 3M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 27, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (External Communication)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 28, type: 'ZONE', name: 'Audit Zone', subName: '(50 - 100jt)', color: 'bg-black', textColor: 'text-white' },
+        { index: 29, type: 'PROPERTY', name: 'Hotel Bisnis', subName: '(5 - 7 M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 30, type: 'CRISIS', name: 'CRISIS', subName: 'Systemic Fraud / ESG Shock', color: 'bg-black', textColor: 'text-white' },
 
         // Left Column (31-39) - Moving Up
         { index: 31, type: 'EVENT', name: 'EVENT', subName: 'Monitoring (Ongoing Evaluation)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 32, type: 'PROPERTY', name: 'Super Mall', subName: '(7 - 10M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 33, type: 'EVENT', name: 'EVENT', subName: 'Monitoring (Deficiency)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 34, type: 'PROPERTY', name: 'Kawasan Industri', subName: '(7-10M)', color: 'bg-gray-200', textColor: 'text-black' },
+        { index: 33, type: 'EVENT', name: 'EVENT', subName: 'Monitoring (Deficiency & Corrective Action)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 34, type: 'PROPERTY', name: 'Kawasan Industri', subName: '(7 - 10M)', color: 'bg-gray-400', textColor: 'text-black' },
         { index: 35, type: 'EVENT', name: 'EVENT', subName: 'Governance Reform', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 36, type: 'PROPERTY', name: 'Pecel Ayam', subName: '(100-200jt)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 37, type: 'PROPERTY', name: 'Hotel Resort', subName: '(8M-12M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 38, type: 'EVENT', name: 'EVENT', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 39, type: 'PROPERTY', name: 'Laundry', subName: '(Rp 250-450jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 36, type: 'PROPERTY', name: 'Pecel Ayam', subName: '(100 - 200jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 37, type: 'PROPERTY', name: 'Hotel Resort', subName: '(8M - 12M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 38, type: 'EVENT', name: 'EVENT', subName: '', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 39, type: 'PROPERTY', name: 'Laundry', subName: '(Rp 250 - 450jt)', color: 'bg-blue-300', textColor: 'text-black' },
     ];
 
     return tiles;
@@ -161,6 +161,7 @@ export default function Dashboard({ properties }: PageProps) {
     const [playerPosition, setPlayerPosition] = useState(0);
     const [rollTotal, setRollTotal] = useState<number | null>(null);
     const [isJumping, setIsJumping] = useState(false);
+    const [showTurnResult, setShowTurnResult] = useState(false);
     const boardTiles = generateBoardTiles(properties);
     const [logs, setLogs] = useState<string[]>([
         "> Initializing Smart Nodes...",
@@ -232,14 +233,22 @@ export default function Dashboard({ properties }: PageProps) {
             `translate(${120 + (Math.random() * 60)}px, ${40 + (Math.random() * 40)}px) rotate(${Math.random() * -45}deg)`
         ]);
 
-        // One fluid animation to final position
+        // One fluid animation to final position, synced with longer sound
         setTimeout(() => {
             setRollTotal(total);
+            setShowTurnResult(true);
+
+            // Play Pop Sound
+            try {
+                new Audio('/sounds/bubble-pop.mp3').play().catch(() => { });
+            } catch (e) { }
+
             setTimeout(() => {
                 setIsRolling(false);
+                setShowTurnResult(false);
                 animateMovement(total);
-            }, 800);
-        }, 1500);
+            }, 1500);
+        }, 2500);
     };
 
     const animateMovement = (steps: number) => {
@@ -405,6 +414,13 @@ export default function Dashboard({ properties }: PageProps) {
                             <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-all duration-[1000ms] ${showDice ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
                                 <Dice3D value={dice[0]} rolling={isRolling} transform={diceTransforms[0]} rotation={diceRotations[0]} />
                                 <Dice3D value={dice[1]} rolling={isRolling} transform={diceTransforms[1]} rotation={diceRotations[1]} />
+                            </div>
+
+                            {/* Floating Green Result Animation */}
+                            <div className={`absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center pointer-events-none z-50 transition-all duration-300 ${showTurnResult ? 'opacity-100 scale-125' : 'opacity-0 scale-50'}`}>
+                                <span className="text-[5rem] font-[1000] text-green-500 drop-shadow-[0_4px_0_rgba(0,0,0,1)] stroke-black" style={{ WebkitTextStroke: '2px black' }}>
+                                    +{rollTotal}
+                                </span>
                             </div>
 
                             <button
