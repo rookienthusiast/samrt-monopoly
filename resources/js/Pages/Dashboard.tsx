@@ -40,47 +40,47 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
     const tiles: TileData[] = [
         // Top Row (0-10) - Moving Right
         { index: 0, type: 'START', name: 'Start', color: 'bg-black', textColor: 'text-black' },
-        { index: 1, type: 'PROPERTY', name: 'Apartment', subName: '(20-30 kamar)\n(1,5M - 2,5M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 2, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(Internal)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 3, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(External)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 1, type: 'PROPERTY', name: 'Apartment', subName: '(20-30 kamar) (1,5M - 2,5M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 2, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Internal)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 3, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (External)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 4, type: 'PROPERTY', name: 'Pabrik Tekstil', subName: '(10M - 20M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 5, type: 'EVENT', name: 'EVENT', subName: 'Activities - \nImplementing', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 5, type: 'EVENT', name: 'EVENT', subName: 'Activities - Implementing', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 6, type: 'PROPERTY', name: 'Kopi', subName: '(Rp 250jt - 500jt)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 7, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment \n(Objectives)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 8, type: 'EVENT', name: 'EVENT', subName: 'Environment \n(Integrity)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 9, type: 'PROPERTY', name: 'Rumah Sakit', subName: 'Pratama\n(4M - 6M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 10, type: 'AUDIT', name: 'AUDIT', subName: '(AI governance \nAudit)', color: 'bg-black', textColor: 'text-black' },
+        { index: 7, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Objectives)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 8, type: 'EVENT', name: 'EVENT', subName: 'Environment (Integrity)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 9, type: 'PROPERTY', name: 'Rumah Sakit', subName: 'Pratama (4M - 6M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 10, type: 'AUDIT', name: 'AUDIT', subName: '(AI governance Audit)', color: 'bg-black', textColor: 'text-black' },
 
         // Right Column (11-19) - Moving Down
-        { index: 11, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment \n(Identification)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 11, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Identification)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 12, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1,8M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 13, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment \n(Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 13, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 14, type: 'PROPERTY', name: 'Minimarket', subName: '(900jt - 1,5M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 15, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: \n60-90jt)', color: 'bg-black', textColor: 'text-black' },
+        { index: 15, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: 60-90jt)', color: 'bg-black', textColor: 'text-black' },
         { index: 16, type: 'PROPERTY', name: 'Cloud Kitchen', subName: '(300jt - 400jt)', color: 'bg-cyan-400', textColor: 'text-black' },
-        { index: 17, type: 'EVENT', name: 'EVENT', subName: 'Control Activities \n(Risk Mitigation)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 17, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Risk Mitigation)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 18, type: 'PROPERTY', name: 'Sewa Apartemen', subName: '(1,5 - 2M)', color: 'bg-cyan-400', textColor: 'text-black' },
-        { index: 19, type: 'EVENT', name: 'EVENT', subName: 'Control Activities \n(IT Controls)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 19, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (IT Controls)', color: 'bg-yellow-400', textColor: 'text-black' },
 
         // Bottom Row (20-30) - Moving Left
-        { index: 20, type: 'AUDIT', name: 'Pengadilan', subName: '(kasus hukum)\n(perdata - pidana)', color: 'bg-black', textColor: 'text-black' },
-        { index: 21, type: 'EVENT', name: 'EVENT', subName: 'Control Activities \n(Policies)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 20, type: 'AUDIT', name: 'Pengadilan', subName: '(kasus hukum) (perdata - pidana)', color: 'bg-black', textColor: 'text-black' },
+        { index: 21, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Policies)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 22, type: 'PROPERTY', name: 'Pusat oleh-oleh', subName: '(1,3M - 1,6M)', color: 'bg-blue-400', textColor: 'text-black' },
         { index: 23, type: 'PROPERTY', name: 'Jasa Konsultan', subName: '(500-800jt)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 24, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(Quality)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 25, type: 'PROPERTY', name: 'Information & \nCommunication \n(Internal)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 24, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Quality)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 25, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Special)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 26, type: 'PROPERTY', name: 'Kawasan Kuliner', subName: '(2,2M - 3M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 27, type: 'EVENT', name: 'EVENT', subName: 'Information & \nCommunication \n(External)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 27, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (External)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 28, type: 'ZONE', name: 'Audit Zone', subName: '(80-100jt)', color: 'bg-black', textColor: 'text-black' },
         { index: 29, type: 'PROPERTY', name: 'Hotel Bisnis', subName: '(5-7 M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 30, type: 'CRISIS', name: 'CRISIS', subName: 'Systemic Fraud \n/ ESG Shock', color: 'bg-black', textColor: 'text-black' },
+        { index: 30, type: 'CRISIS', name: 'CRISIS', subName: 'Systemic Fraud / ESG Shock', color: 'bg-black', textColor: 'text-black' },
 
         // Left Column (31-39) - Moving Up
-        { index: 31, type: 'EVENT', name: 'EVENT', subName: 'Monitoring \n(Ongoing Evaluation)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 31, type: 'EVENT', name: 'EVENT', subName: 'Monitoring (Ongoing Evaluation)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 32, type: 'PROPERTY', name: 'Super Mall', subName: '(7 - 10M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 33, type: 'EVENT', name: 'EVENT', subName: 'Monitoring \n(Deficiency)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 33, type: 'EVENT', name: 'EVENT', subName: 'Monitoring (Deficiency)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 34, type: 'PROPERTY', name: 'Kawasan Industri', subName: '(7-10M)', color: 'bg-gray-200', textColor: 'text-black' },
-        { index: 35, type: 'EVENT', name: 'EVENT', subName: 'Governance \nReform', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 35, type: 'EVENT', name: 'EVENT', subName: 'Governance Reform', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 36, type: 'PROPERTY', name: 'Pecel Ayam', subName: '(100-200jt)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 37, type: 'PROPERTY', name: 'Hotel Resort', subName: '(8M-12M)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 38, type: 'EVENT', name: 'EVENT', color: 'bg-yellow-400', textColor: 'text-black' },
@@ -182,12 +182,66 @@ export default function Dashboard({ properties }: PageProps) {
         return { gridRow: row, gridColumn: col };
     };
 
+    const playSound = (type: 'dice' | 'step') => {
+        try {
+            // Check for AudioContext support
+            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+            if (!AudioContext) return;
+
+            const ctx = new AudioContext();
+            const now = ctx.currentTime;
+
+            if (type === 'step') {
+                // Synthesize a short "tick" or "step" sound (high pitch decaying sine)
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'dice') {
+                // Synthesize a "rattle" sound (multiple short burst of noise/square waves)
+                for (let i = 0; i < 6; i++) {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'square';
+                    // Random pitch for rattle effect
+                    osc.frequency.setValueAtTime(200 + Math.random() * 200, now + i * 0.06);
+
+                    gain.gain.setValueAtTime(0.05, now + i * 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.04);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(now + i * 0.06);
+                    osc.stop(now + i * 0.06 + 0.05);
+                }
+            }
+        } catch (e) {
+            console.error("Audio synth error:", e);
+        }
+    };
+
     const rollDice = () => {
         if (isRolling || isMoving) return;
         setIsRolling(true);
         setShowDice(true);
         setRollTotal(null);
         addLog("> Requesting market move...");
+
+        // Play Dice Sound (Synthetic)
+        playSound('dice');
 
         const d1 = Math.floor(Math.random() * 6) + 1;
         const d2 = Math.floor(Math.random() * 6) + 1;
@@ -236,6 +290,10 @@ export default function Dashboard({ properties }: PageProps) {
 
             setPlayerPosition(prev => {
                 const nextPos = (prev + 1) % 40;
+
+                // Play Step Sound (Synthetic)
+                playSound('step');
+
                 currentStep++;
 
                 if (currentStep >= steps) {
@@ -259,10 +317,10 @@ export default function Dashboard({ properties }: PageProps) {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(30,58,138,0.2),transparent_70%)]"></div>
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-30"></div>
 
-            <div className="relative w-full h-[98vh] flex items-center justify-center px-4">
+            <div className="relative w-full h-[95vh] flex items-center justify-center px-2">
 
-                {/* Main Board Container (Original Aesthetic) */}
-                <div className="absolute inset-0 bg-[#f8f9fa] rounded-3xl shadow-[0_0_100px_rgba(0,0,0,0.5)] border-[12px] border-[#333] p-1 grid grid-rows-11 grid-cols-11 gap-1">
+                {/* Main Board Container (Adjusted to Fit) */}
+                <div className="absolute inset-0 bg-[#f8f9fa] rounded-3xl shadow-[0_0_80px_rgba(0,0,0,0.5)] border-[10px] border-[#222] p-1 grid grid-rows-11 grid-cols-11 gap-1">
 
                     {/* Center Area UI (Decorated) */}
                     <div className="col-start-2 col-end-11 row-start-2 row-end-11 m-[2px] relative flex flex-col items-center justify-between p-6 bg-white rounded-xl border border-black/5 overflow-hidden shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)]">
@@ -441,50 +499,65 @@ export default function Dashboard({ properties }: PageProps) {
                                             ${isCorner ? 'rounded-xl' : ''}
                                         `}
                             >
-                                {/* Smart Monopoly Styling: Header colored bar for Name, white body for Icons */}
-                                <div className={`absolute top-0 inset-x-0 h-[22%] flex items-center justify-center ${tile.color || 'bg-gray-300'} z-10 border-b border-black/5`}>
-                                    <span className={`px-1 text-center ${isCorner ? 'text-[0.6rem] font-black' : 'text-[0.5rem] font-black'} uppercase tracking-tighter leading-none text-white drop-shadow-sm`}>
+                                {
+                                    /* Smart Monopoly Styling: Header colored bar for Name, white body for Icons */
+                                }
+                                <div className={`absolute top-0 inset-x-0 h-[22%] flex items-center justify-center ${tile.color || 'bg-gray-300'} z-10 border-b-2 border-black/5`}>
+                                    <span className={`px-1 text-center ${isCorner ? 'text-[0.65rem] font-bold' : 'text-[0.52rem] font-black'} uppercase tracking-tight leading-none text-white drop-shadow-md`}>
                                         {tile.name}
                                     </span>
                                 </div>
                                 <div className="absolute inset-0 bg-white z-0"></div>
 
-                                <div className={`flex flex-col items-center justify-center text-center w-full h-full z-20 pt-[22%] px-1 ${tile.textColor || 'text-black'}`}>
-                                    {/* Body: Icon + Subname */}
-                                    <div className="flex flex-col items-center justify-center w-full gap-2">
-                                        <div className="pointer-events-none transition-transform duration-300 group-hover:scale-110">
-                                            {tile.type === 'START' && (
-                                                <svg className="w-10 h-10 text-red-600 drop-shadow-md" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M4 4V21M4 4L20 9L4 14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            )}
-                                            {(tile.color?.includes('blue') || tile.color?.includes('gray') || tile.color?.includes('cyan')) && tile.type === 'PROPERTY' && (
-                                                <svg className="w-8 h-8 text-blue-500/30 group-hover:text-blue-500/60 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M3 21H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                                                    <path d="M5 21V7L13 3V21" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                                                    <path d="M19 21V11L13 7" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                                                    <rect x="7" y="10" width="2" height="2" fill="currentColor" opacity="0.5" />
-                                                    <rect x="7" y="14" width="2" height="2" fill="currentColor" opacity="0.5" />
-                                                </svg>
-                                            )}
-                                            {(tile.color?.includes('black') || tile.type === 'AUDIT' || tile.type === 'ZONE') && tile.type !== 'START' && (
-                                                <svg className="w-8 h-8 text-black/20 group-hover:text-black/40 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
-                                                </svg>
-                                            )}
-                                            {(tile.type === 'EVENT' || tile.type === 'CRISIS' || tile.name === 'EVENT') && (
-                                                <div className="relative animate-bounce-slow">
-                                                    <svg className="w-8 h-8 text-yellow-500/40 group-hover:text-yellow-500/70 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.011 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13M12 17H12.01" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                </div>
-                                            )}
+                                <div className={`flex flex-col items-center justify-center text-center w-full h-full z-20 pt-[18%] px-0.5 ${tile.textColor || 'text-black'}`}>
+                                    {/* Body: Priority Icon Rendering to prevent double icons */}
+                                    <div className="flex-grow flex flex-col items-center justify-center w-full -mt-3 gap-1.5">
+                                        <div className="pointer-events-none transition-all duration-300 group-hover:scale-110">
+                                            {(() => {
+                                                if (tile.type === 'START') {
+                                                    return (
+                                                        <div className="relative flex items-center justify-center w-full h-full pb-1">
+                                                            <span className="text-[1.8rem] font-[1000] text-red-600 tracking-tighter leading-none drop-shadow-[2px_2px_0px_rgba(0,0,0,0.2)]" style={{ fontFamily: 'Impact, sans-serif' }}>
+                                                                GO
+                                                            </span>
+                                                        </div>
+                                                    );
+                                                }
+                                                if (tile.color?.includes('yellow') || tile.type === 'EVENT') {
+                                                    return (
+                                                        <div className="animate-bounce-slow">
+                                                            <svg className="w-7 h-7 text-orange-500/40 group-hover:text-orange-500/80 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M12 17H12.01" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                                                                <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.011 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            </svg>
+                                                        </div>
+                                                    );
+                                                }
+                                                if (tile.color?.includes('black') || tile.type === 'ZONE' || tile.type === 'AUDIT' || tile.type === 'CRISIS') {
+                                                    return (
+                                                        <svg className="w-6 h-6 text-black/20 group-hover:text-black/50 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
+                                                        </svg>
+                                                    );
+                                                }
+                                                if (tile.type === 'PROPERTY') {
+                                                    return (
+                                                        <svg className="w-6 h-6 text-blue-500/25 group-hover:text-blue-500/60 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M3 21H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                                            <path d="M5 21V7L13 3V21" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                                                            <path d="M19 21V11L13 7" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                                                            <rect x="7" y="10" width="2" height="2" fill="currentColor" opacity="0.4" />
+                                                        </svg>
+                                                    );
+                                                }
+                                                return null;
+                                            })()}
                                         </div>
 
                                         {tile.subName && (
-                                            <span className="text-[0.4rem] opacity-70 font-bold leading-tight whitespace-pre-line px-1 uppercase tracking-tighter">
-                                                {tile.subName}
+                                            <span className="text-[0.42rem] text-black font-black leading-[0.85] whitespace-normal px-0.5 uppercase tracking-tight block w-full line-clamp-2">
+                                                {tile.subName.replace(/\n/g, ' ')}
                                             </span>
                                         )}
                                     </div>
