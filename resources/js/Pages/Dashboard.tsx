@@ -54,14 +54,36 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
 
         // Right Column (11-19) - Moving Down
         { index: 11, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Risk Identification)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 12, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1.8M)', color: 'bg-blue-600', textColor: 'text-black' },
-        { index: 13, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 14, type: 'PROPERTY', name: 'Minimarket', subName: '(900jt - 1.5M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 15, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: 60-90jt)', color: 'bg-black', textColor: 'text-white' },
-        { index: 16, type: 'PROPERTY', name: 'Cloud Kitchen', subName: '(300jt - 400jt)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 17, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Risk Mitigation)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 18, type: 'PROPERTY', name: 'Sewa Apartemen', subName: '(1.5M - 2M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 19, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (IT Controls)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 12, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1,8M)', color: 'bg-sky-200', textColor: 'text-black' },
+        { index: 13, type: 'PROPERTY', name: 'Minimarket', subName: '(900jt - 1,5M)', color: 'bg-sky-200', textColor: 'text-black' },
+        { index: 14, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
+        // WARNING: To match the image order within 9 slots, "Audit Zone" must be shifted or something removed.
+        // Image has 10 items between corners. Grid has 9.
+        // User image order: Event, Kost, Event, Minimart, AuditZone, Cloud, Event, Apt, Event, Desa.
+        // My Logic: I will merge the two Risk Assessments into earlier slots or drop one.
+        // Let's drop "Event Fraud Risk" to fit "Desa Wisata".
+        // REVISED LIST to fit 9 slots:
+        // 11. EVENT Risk ID
+        // 12. Kost
+        // 13. Minimarket
+        // 14. AUDIT ZONE
+        // 15. Cloud Kitchen
+        // 16. EVENT Risk Mit
+        // 17. Sewa Apartemen
+        // 18. EVENT IT Controls
+        // 19. Desa Wisata
+
+        // Wait, user explicitly listed "EVENT Fraud Risk" in image.
+        // Maybe "Minimarket" and "Kost" share a color group but are separated by Event?
+        // Let's stick to my plan of dropping one Event to make space for Desa Wisata which is a Property.
+
+        // Re-applying with dropped Event:
+        { index: 14, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: 60-90jt)', color: 'bg-black', textColor: 'text-white' },
+        { index: 15, type: 'PROPERTY', name: 'Cloud Kitchen', subName: '(300jt - 400jt)', color: 'bg-cyan-400', textColor: 'text-black' },
+        { index: 16, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Risk Mitigation)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 17, type: 'PROPERTY', name: 'Sewa Apartemen', subName: '(1,5 - 2M)', color: 'bg-cyan-400', textColor: 'text-black' },
+        { index: 18, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (IT Controls)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 19, type: 'PROPERTY', name: 'Desa Wisata', subName: '(2M - 2,5M)', color: 'bg-cyan-400', textColor: 'text-black' },
 
         // Bottom Row (20-30) - Moving Left
         { index: 20, type: 'AUDIT', name: 'Pengadilan', subName: '(kasus hukum) (perdata - pidana)', color: 'bg-black', textColor: 'text-white' },
@@ -92,7 +114,7 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
 };
 
 
-const Dice3D = ({ value, rolling, transform, rotation }: { value: number, rolling: boolean, transform: string, rotation: string }) => {
+const Dice3D = ({ value, rolling, transform, rotation, color = 'white' }: { value: number, rolling: boolean, transform: string, rotation: string, color?: string }) => {
     const renderDots = (num: number) => {
         const configurations: Record<number, number[]> = {
             1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 3, 6, 2, 5, 8]
@@ -102,11 +124,23 @@ const Dice3D = ({ value, rolling, transform, rotation }: { value: number, rollin
             <div className="grid grid-cols-3 grid-rows-3 w-full h-full p-2.5 gap-1">
                 {Array.from({ length: 9 }).map((_, i) => (
                     <div key={i} className="flex items-center justify-center">
-                        {config.includes(i) && <div className="w-2 h-2 bg-black rounded-full shadow-inner"></div>}
+                        {config.includes(i) && <div className="w-2 h-2 bg-white rounded-full shadow-inner"></div>}
                     </div>
                 ))}
             </div>
         );
+    };
+
+    const getDiceColor = () => {
+        switch (color) {
+            case 'red': return 'bg-gradient-to-br from-red-400 to-red-600';
+            case 'blue': return 'bg-gradient-to-br from-blue-400 to-blue-600';
+            case 'green': return 'bg-gradient-to-br from-green-400 to-green-600';
+            case 'yellow': return 'bg-gradient-to-br from-yellow-400 to-yellow-600';
+            case 'orange': return 'bg-gradient-to-br from-orange-400 to-orange-600';
+            case 'purple': return 'bg-gradient-to-br from-purple-400 to-purple-600';
+            default: return 'bg-gradient-to-br from-white to-gray-100';
+        }
     };
 
     return (
@@ -129,7 +163,7 @@ const Dice3D = ({ value, rolling, transform, rotation }: { value: number, rollin
                         return (
                             <div
                                 key={num}
-                                className="absolute inset-0 bg-white border border-gray-300 rounded-lg flex items-center justify-center shadow-[inset_0_0_15px_rgba(0,0,0,0.1)] backface-hidden"
+                                className={`absolute w-full h-full ${getDiceColor()} border-2 border-white/30 rounded-lg shadow-lg flex items-center justify-center backface-hidden`}
                                 style={{ transform: sideRots[i] }}
                             >
                                 {renderDots(num)}
@@ -171,6 +205,7 @@ export default function Dashboard({ properties }: PageProps) {
     const [roomId, setRoomId] = useState<string>('');
     const [inputRoomId, setInputRoomId] = useState('');
     const [rooms, setRooms] = useState<any[]>([]); // New: List of rooms
+    const [roomStatus, setRoomStatus] = useState<string>('WAITING'); // Track room status
 
     // UI State
     const [isResuming, setIsResuming] = useState(true);
@@ -180,7 +215,9 @@ export default function Dashboard({ properties }: PageProps) {
         { id: 1, name: 'Player 1', color: 'red', position: 0, money: 1500 },
         { id: 2, name: 'Player 2', color: 'blue', position: 0, money: 1500 },
         { id: 3, name: 'Player 3', color: 'green', position: 0, money: 1500 },
-        { id: 4, name: 'Player 4', color: 'yellow', position: 0, money: 1500 }
+        { id: 4, name: 'Player 4', color: 'yellow', position: 0, money: 1500 },
+        { id: 5, name: 'Player 5', color: 'orange', position: 0, money: 1500 },
+        { id: 6, name: 'Player 6', color: 'purple', position: 0, money: 1500 }
     ]);
     const [turn, setTurn] = useState(0);
 
@@ -196,9 +233,10 @@ export default function Dashboard({ properties }: PageProps) {
     useEffect(() => {
         const initAudio = () => {
             if (!bgMusicRef.current) {
+                // Kids Game Gaming Background Music from Pixabay
                 bgMusicRef.current = new Audio('/sounds/background.mp3');
                 bgMusicRef.current.loop = true;
-                bgMusicRef.current.volume = 0.2;
+                bgMusicRef.current.volume = 0.3;
             }
         };
 
@@ -224,27 +262,9 @@ export default function Dashboard({ properties }: PageProps) {
         return () => window.removeEventListener('click', handleInteraction);
     }, []);
 
-    // Auto-Resume Session
+    // Start fresh every load (no local storage dependency for cross-device support)
     useEffect(() => {
-        const savedRoomId = localStorage.getItem('monopoly_room_id');
-        if (savedRoomId) {
-            axios.post('/game/room/join', { code: savedRoomId }).then(res => {
-                if (res.data.success) {
-                    const room = res.data.room;
-                    setRoomId(room.code);
-                    if (room.players) setPlayers(room.players);
-                    setGamePhase(room.status === 'LOBBY' ? 'SETUP' : 'PLAYING');
-                    addLog(`> Resumed Session: ${room.code}`);
-                }
-            }).catch(err => {
-                console.log("Resume failed", err);
-                localStorage.removeItem('monopoly_room_id');
-            }).finally(() => {
-                setIsResuming(false);
-            });
-        } else {
-            setIsResuming(false);
-        }
+        setIsResuming(false);
     }, []);
 
     const addLog = (msg: string) => {
@@ -322,25 +342,35 @@ export default function Dashboard({ properties }: PageProps) {
         }
     };
 
-    const handleDeleteRoom = async (code: string, e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent entering room
-        if (!confirm('Delete this room?')) return;
+    const handleDeleteRoom = async (code: string, e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
 
         try {
             await axios.post('/game/room/delete', { code });
             fetchRooms();
-        } catch (e) { console.error(e); }
+        } catch (error) {
+            console.error("Delete failed", error);
+        }
+    };
+
+    const handleDeleteAllRooms = async () => {
+        try {
+            await axios.post('/game/rooms/delete-all');
+            setRooms([]);
+        } catch (error) {
+            console.error("Delete all failed", error);
+        }
     };
 
     const handleEnterRoom = (room: any) => {
         setRoomId(room.code);
-        localStorage.setItem('monopoly_room_id', room.code);
-        if (room.players) setPlayers(room.players);
-        // User rule: "harus klik room nya dulu baru masuk ke situ baru main".
-        // Always go to SETUP first unless game is strictly running? 
-        // He says "baru masuk ke situ (Setup) baru main".
-        // So allow SETUP even if status is playing? Maybe catch up logic is 'PLAYING', but we join via Setup?
-        // Let's stick to standard flow: LOBBY -> SETUP.
+        setRoomStatus(room.status);
+        // Load Full State from Server for Cross-Device Play
+        if (room.players) {
+            setPlayers(room.players);
+            if (room.turn !== undefined) setTurn(room.turn);
+            if (room.logs) setLogs(room.logs);
+        }
         setGamePhase('SETUP');
     };
 
@@ -351,7 +381,8 @@ export default function Dashboard({ properties }: PageProps) {
                 code: roomId,
                 players: players,
                 status: 'PLAYING',
-                logs: logs
+                logs: logs,
+                turn: turn
             });
 
             setGamePhase('PLAYING');
@@ -405,7 +436,6 @@ export default function Dashboard({ properties }: PageProps) {
     };
 
     const handleExitGame = () => {
-        if (!confirm("Exit to Main Menu?")) return;
         localStorage.removeItem('monopoly_room_id');
         setRoomId('');
         setGamePhase('LOBBY');
@@ -414,7 +444,6 @@ export default function Dashboard({ properties }: PageProps) {
     };
 
     const handleResetGame = async () => {
-        if (!confirm("Reset Game State? All progress will be lost.")) return;
 
         // Reset Logic
         // 1. Reset Players to start
@@ -568,7 +597,8 @@ export default function Dashboard({ properties }: PageProps) {
                 code: roomId,
                 players: players,
                 status: 'PLAYING',
-                logs: logs
+                logs: logs,
+                turn: turn
             }).catch(e => console.error(e));
         }
     }, [turn]); // Sync when turn changes
@@ -585,6 +615,18 @@ export default function Dashboard({ properties }: PageProps) {
     return (
         <div className="min-h-screen bg-[#0a0a0c] flex items-center justify-center p-1 font-sans text-white overflow-hidden">
             <Head title="Smart Monopoly" />
+            <style>{`
+                @keyframes zoomInEntry { 
+                    0% { opacity: 0; transform: scale(0.92) translateY(20px); } 
+                    100% { opacity: 1; transform: scale(1) translateY(0); } 
+                }
+                @keyframes slideUpEntry { 
+                    0% { opacity: 0; transform: translateY(100vh); } 
+                    100% { opacity: 1; transform: translateY(0); } 
+                }
+                .animate-zoom-in { animation: zoomInEntry 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+                .animate-slide-up { animation: slideUpEntry 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+            `}</style>
 
             {/* Background Effects */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(30,58,138,0.2),transparent_70%)]"></div>
@@ -592,140 +634,318 @@ export default function Dashboard({ properties }: PageProps) {
 
             <div className="relative w-full h-[95vh] flex items-center justify-center px-2">
 
-                {/* GAME LOBBY */}
+                {/* GAME LOBBY - CLASSIC CARTOON THEME */}
                 {gamePhase === 'LOBBY' && (
-                    <div className="z-50 flex flex-col items-center justify-center w-full max-w-md p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl animate-[fadeIn_0.5s_ease-out]">
+                    <div className="fixed inset-0 z-[999] bg-sky-300 flex flex-col items-center justify-center font-sans overflow-hidden animate-zoom-in">
 
-                        {/* Logo / Header */}
-                        <div className="mb-12 text-center relative">
-                            <div className="inline-block px-3 py-1 mb-4 border border-blue-500/30 rounded-full bg-blue-500/10 backdrop-blur-sm">
-                                <span className="text-[0.65rem] font-bold text-blue-400 tracking-widest uppercase">E-Governance Edition</span>
+                        {/* Background Elements */}
+                        <div className="absolute inset-0 pointer-events-none">
+                            {/* Clouds using radial gradients/shapes or simple divs */}
+                            <div className="absolute top-[10%] left-[10%] w-32 h-16 bg-white/70 rounded-full blur-xl opacity-80 animate-pulse"></div>
+                            <div className="absolute top-[20%] right-[15%] w-48 h-24 bg-white/60 rounded-full blur-2xl opacity-70 animate-pulse delay-700"></div>
+                            <div className="absolute top-[5%] left-[40%] w-64 h-32 bg-white/40 rounded-full blur-3xl opacity-50"></div>
+
+                            {/* Cityscape Silhouette */}
+                            <div className="absolute bottom-0 inset-x-0 h-[35vh] flex items-end opacity-90 text-slate-600">
+                                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 320" fill="currentColor">
+                                    <path d="M0,320 L0,180 L50,180 L50,120 L120,120 L120,240 L180,240 L180,80 L250,80 L250,260 L320,260 L320,150 L400,150 L400,320 Z 
+                                             M400,320 L400,200 L480,200 L480,280 L550,280 L550,100 L650,100 L650,320 Z 
+                                             M650,320 L650,220 L720,220 L720,140 L800,140 L800,250 L880,250 L880,90 L950,90 L950,320 Z 
+                                             M950,320 L950,190 L1020,190 L1020,270 L1100,270 L1100,110 L1200,110 L1200,320 Z" opacity="0.8" />
+                                    <path d="M-50,320 L1250,320 L1250,300 L-50,300 Z" fill="#334155" /> {/* Ground line */}
+                                </svg>
                             </div>
-                            <h1 className="text-6xl font-[1000] text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 tracking-tighter drop-shadow-sm leading-none" style={{ fontFamily: 'Impact, sans-serif' }}>
-                                SMART<br />MONOPOLY
-                            </h1>
                         </div>
 
-                        {/* Room Grid System */}
-                        <div className="w-full grid grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto p-2">
-                            {/* Active Rooms */}
-                            {rooms.map((room) => (
-                                <div
-                                    key={room.id}
-                                    onClick={() => handleEnterRoom(room)}
-                                    className="relative group cursor-pointer bg-white/10 hover:bg-white/20 border border-white/10 p-4 rounded-2xl flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95"
-                                >
-                                    {/* Delete Button */}
-                                    <button
-                                        onClick={(e) => handleDeleteRoom(room.code, e)}
-                                        className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center bg-red-500/20 hover:bg-red-600 text-red-300 hover:text-white rounded-full text-xs transition-colors opacity-0 group-hover:opacity-100"
-                                    >
-                                        ✕
-                                    </button>
+                        {/* Main Menu Container */}
+                        <div className="relative z-10 w-full max-w-2xl flex flex-col items-center gap-6 p-4">
 
-                                    <span className="text-xl font-mono font-black text-blue-400">#{room.code}</span>
-                                    <span className="text-[0.6rem] font-bold text-gray-400 uppercase tracking-wider mt-1">
-                                        {room.status} • {room.players?.length || 4} Players
-                                    </span>
+                            {/* Red Box Logo */}
+                            <div className="relative bg-[#e11d21] border-[6px] border-white px-12 py-4 shadow-[0_20px_40px_rgba(0,0,0,0.3)] transform -rotate-1 mb-6">
+                                <div className="absolute inset-0 border-[3px] border-white/20 m-1 pointer-events-none"></div>
+                                <h1 className="text-center leading-none drop-shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
+                                    <span className="block text-[5rem] md:text-[6.5rem] font-[1000] text-white tracking-tighter" style={{ fontFamily: 'Impact, sans-serif', letterSpacing: '-0.05em' }}>MONOPOLY</span>
+                                    <span className="block text-[1rem] md:text-[1.5rem] font-[900] text-white tracking-[0.2em] uppercase mt-2 border-t-2 border-white/50 pt-1">E-GOVERNANCE EDITION</span>
+                                </h1>
+                                <div className="absolute -top-12 -right-10 text-[5rem] transform rotate-12 drop-shadow-lg filter brightness-110">🎩</div>
+                            </div>
+
+                            {/* Menu Buttons Area */}
+                            <div className="w-full max-w-sm flex flex-col gap-5">
+
+                                {/* 3D Glossy Buttons for Menu Items */}
+                                <div className="flex flex-col gap-4 w-full">
+
+                                    {/* Create Game Button (Main Action) */}
+                                    {rooms.length < 6 && (
+                                        <button
+                                            onClick={handleCreateRoom}
+                                            className="group relative w-full bg-gradient-to-b from-cyan-300 to-cyan-500 hover:from-cyan-200 hover:to-cyan-400 border-2 border-cyan-100 rounded-xl py-3 shadow-[0_6px_0_#0ea5e9,0_15px_20px_rgba(0,0,0,0.2)] active:shadow-[0_2px_0_#0ea5e9] active:translate-y-[4px] transition-all"
+                                        >
+                                            <span className="text-2xl font-[1000] text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.2)] uppercase tracking-wider">
+                                                New Game
+                                            </span>
+                                        </button>
+                                    )}
+
+                                    {/* Room List (Presented as 'Load Game' slots styling) */}
+                                    <div className="flex flex-col gap-2 max-h-[35vh] overflow-y-auto w-full custom-scrollbar pr-1 pb-2">
+                                        {rooms.map(room => (
+                                            <div key={room.id} onClick={() => handleEnterRoom(room)}
+                                                className="cursor-pointer relative group bg-gradient-to-b from-blue-500 to-blue-700 hover:from-blue-400 hover:to-blue-600 border-2 border-blue-300 rounded-lg py-2 px-4 shadow-[0_4px_0_#1e3a8a] active:translate-y-1 active:shadow-none transition-all flex items-center justify-between"
+                                            >
+                                                <div className="flex flex-col items-start">
+                                                    <span className="text-lg font-black text-white drop-shadow-sm leading-none">ROOM #{room.code}</span>
+                                                    <span className="text-[0.6rem] font-bold text-blue-200 uppercase">{room.status} • {room.players?.length || 4} P</span>
+                                                </div>
+
+                                            </div>
+                                        ))}
+                                        {rooms.length === 0 && (
+                                            <div className="text-center py-4 text-slate-700 font-bold italic bg-white/20 rounded-xl border-2 border-white/30 backdrop-blur-sm">
+                                                No Games Found
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Delete All & Options */}
+                                    <div className="grid grid-cols-2 gap-3 mt-2">
+                                        <button
+                                            onClick={handleDeleteAllRooms}
+                                            disabled={rooms.length === 0}
+                                            className={`rounded-lg py-2 font-bold text-sm text-white shadow-[0_4px_0_#b91c1c] active:shadow-none active:translate-y-[3px] transition-all border-2 border-red-300 ${rooms.length === 0 ? 'bg-gray-400 border-gray-400 shadow-none cursor-not-allowed opacity-50' : 'bg-gradient-to-b from-red-500 to-red-600 hover:from-red-400'}`}
+                                        >
+                                            RESET ALL
+                                        </button>
+                                        <button
+                                            onClick={toggleMusic}
+                                            className="bg-gradient-to-b from-slate-500 to-slate-700 hover:from-slate-400 border-2 border-slate-400 rounded-lg py-2 font-bold text-sm text-white shadow-[0_4px_0_#334155] active:shadow-none active:translate-y-[3px] transition-all"
+                                        >
+                                            {isMusicPlaying ? 'MUSIC: ON' : 'MUSIC: OFF'}
+                                        </button>
+                                    </div>
                                 </div>
-                            ))}
-
-                            {/* Add Button (Only if < 6 rooms) */}
-                            {rooms.length < 6 && (
-                                <button
-                                    onClick={handleCreateRoom}
-                                    className="border-2 border-dashed border-white/20 hover:border-blue-500/50 hover:bg-blue-500/10 p-4 rounded-2xl flex flex-col items-center justify-center transition-all group"
-                                >
-                                    <span className="text-3xl text-white/30 group-hover:text-blue-400 transform group-hover:scale-110 transition-transform mb-1">+</span>
-                                    <span className="text-[0.6rem] font-bold text-white/30 group-hover:text-blue-300 uppercase tracking-widest">Create Room</span>
-                                </button>
-                            )}
+                            </div>
                         </div>
 
-                        {/* Lobby Music Toggle */}
-                        <button
-                            onClick={toggleMusic}
-                            className="mt-8 text-xs font-bold text-gray-500 flex items-center gap-2 hover:text-white transition-colors"
-                        >
-                            {isMusicPlaying ? '🔊 MUSIC ON' : '🔇 MUSIC OFF'}
-                        </button>
+                        {/* Footer Licenses */}
+                        <div className="absolute bottom-2 w-full text-center z-10 opacity-70">
+                            <p className="text-[0.6rem] text-slate-700 font-bold">Smart Monopoly E-Governance Edition © 2026</p>
+                        </div>
                     </div>
                 )}
 
-                {/* GAME SETUP (LOBBY ROOM) */}
+                {/* GAME SETUP (LOBBY ROOM) - CARTOON THEME */}
                 {gamePhase === 'SETUP' && (
-                    <div className="z-50 flex flex-col items-center justify-center w-full max-w-2xl p-8 bg-black/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl animate-[fadeIn_0.5s_ease-out]">
-                        <h2 className="text-3xl font-[1000] text-white tracking-tight mb-2 uppercase italic">Room Setup</h2>
-                        <div className="bg-white/10 px-4 py-1 rounded-full mb-8 border border-white/5">
-                            <span className="text-blue-400 font-mono font-bold tracking-widest text-lg">#{roomId}</span>
-                            <button onClick={() => navigator.clipboard.writeText(roomId)} className="ml-2 text-xs text-gray-500 hover:text-white transition-colors">📋</button>
+                    <div className="fixed inset-0 z-[999] bg-sky-300 flex flex-col items-center justify-center font-sans overflow-hidden animate-slide-up">
+
+                        {/* Background Elements (Matched with Lobby) */}
+                        <div className="absolute inset-0 pointer-events-none">
+                            <div className="absolute top-[10%] left-[10%] w-32 h-16 bg-white/70 rounded-full blur-xl opacity-80 animate-pulse"></div>
+                            <div className="absolute top-[20%] right-[15%] w-48 h-24 bg-white/60 rounded-full blur-2xl opacity-70 animate-pulse delay-700"></div>
+                            <div className="absolute bottom-0 inset-x-0 h-[35vh] flex items-end opacity-90 text-slate-600">
+                                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 320" fill="currentColor">
+                                    <path d="M0,320 L0,180 L50,180 L50,120 L120,120 L120,240 L180,240 L180,80 L250,80 L250,260 L320,260 L320,150 L400,150 L400,320 Z M400,320 L400,200 L480,200 L480,280 L550,280 L550,100 L650,100 L650,320 Z M650,320 L650,220 L720,220 L720,140 L800,140 L800,250 L880,250 L880,90 L950,90 L950,320 Z M950,320 L950,190 L1020,190 L1020,270 L1100,270 L1100,110 L1200,110 L1200,320 Z" opacity="0.8" />
+                                    <path d="M-50,320 L1250,320 L1250,300 L-50,300 Z" fill="#334155" />
+                                </svg>
+                            </div>
                         </div>
 
-                        <div className="w-full grid grid-cols-2 gap-4 mb-8">
-                            {players.map((player, idx) => (
-                                <div key={player.id} className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3 group focus-within:bg-white/10 transition-colors">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-black flex items-center justify-center text-white font-bold shadow-inner">
-                                        P{idx + 1}
-                                    </div>
-                                    <input
-                                        type="text"
-                                        value={player.name}
-                                        onChange={(e) => updatePlayerName(player.id, e.target.value)}
-                                        className="bg-transparent border-none text-white font-bold text-lg focus:outline-none w-full"
-                                    />
-                                    {players.length > 2 && (
-                                        <button onClick={() => removePlayer(player.id)} className="text-red-500 hover:text-red-400 opacity-50 hover:opacity-100 transition-opacity p-1">✕</button>
-                                    )}
+                        {/* Setup Container */}
+                        <div className="relative z-10 w-full max-w-3xl flex flex-col items-center gap-6 p-4">
+
+
+
+                            {/* Header Panel */}
+                            <div className="flex flex-col items-center gap-2 mb-2">
+                                <div className="bg-[#e11d21] border-[4px] border-white px-8 py-2 shadow-[0_10px_20px_rgba(0,0,0,0.2)] transform -rotate-1 relative">
+                                    <div className="absolute inset-0 border-[2px] border-white/20 m-1 pointer-events-none"></div>
+                                    <h1 className="text-center leading-none">
+                                        <span className="block text-[3rem] font-[1000] text-white tracking-tighter" style={{ fontFamily: 'Impact, sans-serif' }}>MONOPOLY</span>
+                                        <span className="block text-[0.7rem] font-[900] text-white tracking-[0.2em] uppercase mt-1 border-t border-white/50 pt-1">E-GOVERNANCE EDITION</span>
+                                    </h1>
                                 </div>
-                            ))}
-                            {players.length < 6 && (
-                                <button onClick={addPlayer} className="border-2 border-dashed border-white/20 hover:border-white/40 hover:bg-white/5 rounded-xl flex items-center justify-center text-white/50 hover:text-white font-bold transition-all p-3">
-                                    + ADD PLAYER
-                                </button>
-                            )}
-                        </div>
 
-                        <button
-                            onClick={handleStartGame}
-                            className="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-[1000] text-2xl italic tracking-wider rounded-xl shadow-lg transform transition-all hover:scale-[1.02] active:scale-95"
-                        >
-                            START GAME 🚀
-                        </button>
+                                <div className="bg-white px-8 py-3 rounded-xl border-b-[6px] border-slate-200 shadow-xl flex items-center gap-4 mt-4 transform rotate-1">
+                                    <span className="text-slate-400 font-bold text-xs uppercase tracking-widest">ROOM CODE</span>
+                                    <span className="text-4xl font-black text-slate-800 font-mono tracking-widest">{roomId}</span>
+                                    <button
+                                        onClick={() => navigator.clipboard.writeText(roomId)}
+                                        className="ml-2 w-10 h-10 flex items-center justify-center bg-blue-50 hover:bg-blue-100 rounded-lg text-blue-600 border-2 border-blue-100 transition-colors"
+                                        title="Copy Code"
+                                    >
+                                        📋
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Players Grid */}
+                            <div className="w-full bg-white/30 backdrop-blur-md rounded-3xl border-4 border-white/60 p-6 shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[45vh] overflow-y-auto custom-scrollbar">
+                                {players.map((player, idx) => {
+                                    const borderColor =
+                                        player.color === 'red' ? '#ef4444' :
+                                            player.color === 'blue' ? '#3b82f6' :
+                                                player.color === 'green' ? '#22c55e' :
+                                                    player.color === 'yellow' ? '#eab308' :
+                                                        player.color === 'orange' ? '#f97316' :
+                                                            player.color === 'purple' ? '#a855f7' :
+                                                                '#3b82f6';
+                                    return (
+                                        <div key={player.id} className="bg-white p-3 rounded-xl flex items-center gap-3 shadow-[0_4px_0_rgba(0,0,0,0.1)] border-2 transition-all hover:-translate-y-1"
+                                            style={{ borderColor: borderColor }}
+                                        >
+                                            <div className="w-12 h-12 min-w-[3rem] shrink-0 rounded-full flex items-center justify-center text-white font-bold shadow-inner border-2 border-white"
+                                                style={{ background: `linear-gradient(135deg, ${borderColor}, ${borderColor}dd)` }}>
+                                                P{idx + 1}
+                                            </div>
+                                            {roomStatus === 'PLAYING' ? (
+                                                <span className="bg-transparent text-gray-800 font-bold text-lg w-full px-1 cursor-default">{player.name}</span>
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    value={player.name}
+                                                    onChange={(e) => updatePlayerName(player.id, e.target.value)}
+                                                    className="bg-transparent border-b-2 border-transparent focus:border-gray-300 text-gray-800 font-bold text-lg focus:outline-none w-full px-1"
+                                                    placeholder="Player Name"
+                                                />
+                                            )}
+                                            {roomStatus !== 'PLAYING' && players.length > 2 && (
+                                                <button onClick={() => removePlayer(player.id)} className="w-8 h-8 flex items-center justify-center text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full font-bold transition-colors">✕</button>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                                {roomStatus !== 'PLAYING' && players.length < 6 && (
+                                    <button onClick={addPlayer} className="group border-4 border-dashed border-white/50 hover:border-white hover:bg-white/20 rounded-xl flex items-center justify-center text-white font-bold transition-all p-4 min-h-[80px]">
+                                        <span className="bg-white/20 group-hover:bg-white/40 w-10 h-10 rounded-full flex items-center justify-center text-2xl mr-2">+</span>
+                                        ADD PLAYER
+                                    </button>
+                                )}
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="w-full max-w-sm flex flex-col gap-3 mt-2">
+                                <button
+                                    onClick={handleStartGame}
+                                    className="w-full py-4 rounded-xl bg-gradient-to-b from-green-400 to-green-600 border-b-[6px] border-green-700 text-white font-[1000] text-3xl shadow-[0_10px_20px_rgba(22,163,74,0.3)] hover:brightness-110 active:border-b-0 active:translate-y-2 active:shadow-none transition-all uppercase tracking-wider transform hover:scale-[1.02]"
+                                >
+                                    {roomStatus === 'PLAYING' ? 'RESUME GAME' : 'START GAME'}
+                                </button>
+                                <button
+                                    onClick={handleExitGame}
+                                    className="w-full py-3 rounded-xl bg-gradient-to-b from-slate-500 to-slate-700 border-b-[4px] border-slate-800 text-white font-bold text-lg shadow-lg active:border-b-0 active:translate-y-1 active:shadow-none transition-all"
+                                >
+                                    CANCEL & RETURN
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
 
 
                 {/* Main Board Container (Adjusted to Fit) */}
                 {gamePhase === 'PLAYING' && (
-                    <div className="absolute inset-0 bg-[#f8f9fa] rounded-3xl shadow-[0_0_80px_rgba(0,0,0,0.5)] border-[10px] border-[#222] p-1 grid grid-rows-11 grid-cols-11 gap-1 animate-[zoomIn_0.5s_ease-out]">
+                    <div className="absolute inset-0 rounded-3xl p-1 grid grid-rows-11 grid-cols-11 gap-1 animate-[zoomIn_0.5s_ease-out]"
+                        style={{
+                            border: '12px solid #1e3a8a',
+                            boxShadow: `
+                                0 0 0 2px #1e40af,
+                                0 0 0 4px #2563eb,
+                                inset 0 2px 4px rgba(59, 130, 246, 0.3),
+                                inset 0 -2px 4px rgba(0,0,0,0.4),
+                                0 8px 16px rgba(0,0,0,0.5),
+                                0 16px 32px rgba(0,0,0,0.4),
+                                0 24px 48px rgba(0,0,0,0.3)
+                            `,
+                            background: 'linear-gradient(145deg, #1e3a8a, #1e40af, #2563eb)',
+                            backgroundImage: `
+                                linear-gradient(145deg, #1e3a8a, #1e40af, #2563eb),
+                                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px)
+                            `
+                        }}
+                    >
 
                         {/* Center Area UI (Decorated) */}
                         <div className="col-start-2 col-end-11 row-start-2 row-end-11 m-[2px] relative flex flex-col items-center justify-between p-6 bg-white rounded-xl border border-black/5 overflow-hidden shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)]">
 
-                            {/* Top Right Info Bar (Relocated) */}
-                            <div className="absolute top-4 right-4 z-[100] select-none">
-                                <div className="flex flex-col items-end gap-1 bg-white/60 backdrop-blur-md p-3 rounded-lg border border-black/5 shadow-sm">
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex flex-col items-end">
-                                            <span className="text-[0.6rem] font-black text-gray-400 tracking-widest uppercase">ROOM ID</span>
-                                            <span className="text-xs font-mono font-black text-gray-800">{roomId}</span>
-                                        </div>
-                                        <div className="w-px h-6 bg-gray-300 mx-1"></div>
-                                        <div className="flex flex-col items-end">
-                                            <div className="flex items-center gap-1">
-                                                <span className="text-[0.6rem] font-black text-gray-500 tracking-widest uppercase">TURN:</span>
-                                                <span className="text-white bg-red-600 px-1.5 py-0.5 rounded text-[0.6rem] font-bold">P{(turn % players.length) + 1}</span>
+                            {/* Center Top Player Info */}
+                            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[100] select-none transition-all duration-300">
+                                {(() => {
+                                    const curPlayer = getCurrentPlayer();
+                                    const curTile = boardTiles[curPlayer.position || 0];
+
+                                    // Helper to get colors based on tile
+                                    const getTileColors = (t: any) => {
+                                        if (t.type === 'START') return { bg: 'bg-red-600', text: 'text-red-600', border: 'border-red-600', light: 'bg-red-50' };
+                                        if (t.type === 'EVENT' || t.color?.includes('yellow')) return { bg: 'bg-yellow-500', text: 'text-yellow-600', border: 'border-yellow-400', light: 'bg-yellow-50' };
+                                        if (t.type === 'ZONE' || t.color?.includes('purple')) return { bg: 'bg-purple-600', text: 'text-purple-600', border: 'border-purple-400', light: 'bg-purple-50' };
+                                        if (t.type === 'AUDIT' || t.type === 'CRISIS' || t.color?.includes('black')) return { bg: 'bg-gray-800', text: 'text-gray-800', border: 'border-gray-600', light: 'bg-gray-100' };
+
+                                        // Property fallback (extract color from classname is risky in JIT, best effort)
+                                        if (t.color?.includes('orange')) return { bg: 'bg-orange-500', text: 'text-orange-600', border: 'border-orange-400', light: 'bg-orange-50' };
+                                        if (t.color?.includes('green')) return { bg: 'bg-green-600', text: 'text-green-600', border: 'border-green-400', light: 'bg-green-50' };
+                                        if (t.color?.includes('blue')) return { bg: 'bg-blue-600', text: 'text-blue-600', border: 'border-blue-400', light: 'bg-blue-50' };
+                                        if (t.color?.includes('red')) return { bg: 'bg-red-600', text: 'text-red-600', border: 'border-red-400', light: 'bg-red-50' };
+                                        if (t.color?.includes('pink')) return { bg: 'bg-pink-500', text: 'text-pink-600', border: 'border-pink-400', light: 'bg-pink-50' };
+
+                                        return { bg: 'bg-blue-600', text: 'text-blue-600', border: 'border-blue-600', light: 'bg-blue-50' };
+                                    };
+
+                                    const colors = getTileColors(curTile);
+
+                                    return (
+                                        <div className={`flex flex-col items-center gap-1 ${colors.light} backdrop-blur-md px-8 py-4 rounded-2xl shadow-2xl border-4 ${colors.border} transition-all duration-500`}>
+                                            {/* Current Player Name */}
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span
+                                                    className="text-white px-2 py-0.5 rounded text-xs font-bold shadow-sm"
+                                                    style={{
+                                                        backgroundColor: curPlayer.color === 'red' ? '#dc2626' :
+                                                            curPlayer.color === 'blue' ? '#2563eb' :
+                                                                curPlayer.color === 'green' ? '#16a34a' :
+                                                                    curPlayer.color === 'yellow' ? '#ca8a04' :
+                                                                        curPlayer.color === 'orange' ? '#ea580c' :
+                                                                            curPlayer.color === 'purple' ? '#9333ea' : '#dc2626'
+                                                    }}
+                                                >
+                                                    P{(turn % players.length) + 1}
+                                                </span>
+                                                <span className="text-2xl font-black italic uppercase tracking-tight text-black drop-shadow-sm">
+                                                    {curPlayer.name}
+                                                </span>
                                             </div>
-                                            <span className="text-xl font-black text-red-700 italic uppercase">{getCurrentPlayer().name}</span>
+
+                                            {/* Zone/Tile Info */}
+                                            <div className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white/60 border-2 border-white/50 shadow-sm`}>
+                                                {/* Icon based on theme/type */}
+                                                <div className={`${colors.text}`}>
+                                                    {(curTile.type === 'EVENT' || curTile.color?.includes('yellow')) ? (
+                                                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17H12.01" stroke="currentColor" strokeWidth="4" strokeLinecap="round" /><path d="M9.09 9C9.32 8.33 9.79 7.76 10.4 7.41C11 7 11.7 6.9 12.4 7C13.1 7.15 13.7 7.5 14.2 8C14.6 8.6 14.9 9.3 14.9 10C14.9 12 11.9 13 11.9 13" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>
+                                                    ) : (
+                                                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                                                    )}
+                                                </div>
+                                                <span className={`text-sm font-black uppercase tracking-wide leading-none ${colors.text}`}>
+                                                    {curTile.name}
+                                                </span>
+                                            </div>
+
+                                            {/* Liquidity */}
+                                            <div className="flex items-center gap-2 pt-2 mt-2 border-t border-black/10 w-full justify-center">
+                                                <span className="text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest">Liquidity:</span>
+                                                <span className="text-3xl font-mono font-black text-green-700 tracking-tight drop-shadow-sm">Rp 500<span className="text-lg">M</span></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="flex items-center gap-3 border-t border-black/5 pt-1 mt-1 w-full justify-end">
-                                        <span className="text-[0.6rem] font-black text-gray-500 tracking-widest uppercase">Liquidity:</span>
-                                        <span className="text-2xl font-mono font-black text-green-700">Rp 500<span className="text-sm">M</span></span>
-                                    </div>
+                                    );
+                                })()}
+                            </div>
+
+                            {/* Top Right Controls */}
+                            <div className="absolute top-4 right-4 z-[100] select-none">
+                                <div className="flex flex-col gap-2">
                                     <button
                                         onClick={toggleMusic}
-                                        className="mt-2 w-full text-[0.6rem] font-bold bg-gray-100 hover:bg-gray-200 text-gray-600 py-1 px-2 rounded-md transition-colors flex items-center justify-center gap-2"
+                                        className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-600 py-2 px-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
                                     >
                                         {isMusicPlaying ? (
                                             <><span>🔊</span> PAUSE MUSIC</>
@@ -737,7 +957,7 @@ export default function Dashboard({ properties }: PageProps) {
                                     {/* Menu Button */}
                                     <button
                                         onClick={() => setShowGameMenu(true)}
-                                        className="mt-2 w-full text-[0.6rem] font-bold bg-gray-800 hover:bg-gray-700 text-white py-1 px-2 rounded-md transition-colors"
+                                        className="text-xs font-bold bg-gray-800 hover:bg-gray-700 text-white py-2 px-3 rounded-lg transition-colors shadow-sm"
                                     >
                                         ⚙️ MENU / PAUSE
                                     </button>
@@ -763,7 +983,7 @@ export default function Dashboard({ properties }: PageProps) {
                                             onClick={handleResetGame}
                                             className="py-3 bg-yellow-500 hover:bg-yellow-400 text-white font-bold rounded-xl shadow-lg"
                                         >
-                                            RESET GAME ⚠️
+                                            RESET GAME
                                         </button>
 
                                         <button
@@ -878,8 +1098,8 @@ export default function Dashboard({ properties }: PageProps) {
                             <div className="flex flex-col items-center justify-center flex-1 w-full relative z-20 p-4">
 
                                 <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-all duration-[1000ms] ${showDice ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
-                                    <Dice3D value={dice[0]} rolling={isRolling} transform={diceTransforms[0]} rotation={diceRotations[0]} />
-                                    <Dice3D value={dice[1]} rolling={isRolling} transform={diceTransforms[1]} rotation={diceRotations[1]} />
+                                    <Dice3D value={dice[0]} rolling={isRolling} transform={diceTransforms[0]} rotation={diceRotations[0]} color={getCurrentPlayer().color} />
+                                    <Dice3D value={dice[1]} rolling={isRolling} transform={diceTransforms[1]} rotation={diceRotations[1]} color={getCurrentPlayer().color} />
                                 </div>
 
                                 <div className={`absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none z-50 transition-all duration-1000 ease-out ${showTurnResult ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-12'}`}>
@@ -932,38 +1152,53 @@ export default function Dashboard({ properties }: PageProps) {
                                     key={tile.index}
                                     style={gridStyle}
                                     className={`
-                                            relative border border-white/5 flex flex-col items-center justify-center p-1
-                                            ${tile.color || 'bg-[#15191e]'}
+                                            relative border-4 border-white flex flex-col items-center justify-center p-1
                                             transition-all duration-300 group
-                                            ${tile.index === playerPosition
-                                            ? 'z-40 shadow-[0_20px_50px_rgba(0,0,0,0.6)] !bg-opacity-100 border-none'
-                                            : 'hover:scale-105 hover:z-20 hover:border-white/10'
-                                        }
-                                            ${isCorner ? 'rounded-xl' : ''}
+                                            ${(() => {
+                                            // Check if any player is currently moving on this tile
+                                            let borderColor = 'border-yellow-300'; // Default fallback
+                                            const movingPlayer = players.find((p, idx) => {
+                                                const isMovingHere = isMoving && (p?.position || 0) === tile.index && (turn % players.length) === idx;
+                                                return isMovingHere;
+                                            });
+
+                                            if (movingPlayer) {
+                                                switch (movingPlayer.color) {
+                                                    case 'red': borderColor = 'border-red-500'; break;
+                                                    case 'blue': borderColor = 'border-blue-500'; break;
+                                                    case 'green': borderColor = 'border-green-500'; break;
+                                                    case 'yellow': borderColor = 'border-yellow-400'; break;
+                                                    case 'orange': borderColor = 'border-orange-500'; break;
+                                                    case 'purple': borderColor = 'border-purple-500'; break;
+                                                    default: borderColor = 'border-blue-500';
+                                                }
+                                                return `z-40 shadow-[0_20px_50px_rgba(0,0,0,0.6)] scale-105 ${borderColor}`;
+                                            }
+                                            return '';
+                                        })()}
+                                            ${isCorner ? 'rounded-xl' : 'rounded-lg'}
                                         `}
                                 >
-                                    { /* Header */}
-                                    <div className={`absolute top-0 inset-x-0 h-[22%] flex items-center justify-center ${tile.color || 'bg-gray-300'} z-10 border-b-2 border-black/5`}>
-                                        <span className={`px-1 text-center ${isCorner ? 'text-[0.65rem] font-bold' : 'text-[0.52rem] font-black'} uppercase tracking-tight leading-none text-white drop-shadow-md`}>
+                                    { /* Header - Color Bar */}
+                                    <div className={`absolute top-0 inset-x-0 h-[28%] flex items-center justify-center z-10 ${tile.type === 'AUDIT' ? 'bg-red-600' :
+                                        tile.type === 'CRISIS' ? 'bg-red-600' :
+                                            tile.color === 'bg-black' ? 'bg-red-600' :
+                                                tile.type === 'PROPERTY' ? tile.color || 'bg-blue-600' :
+                                                    tile.type === 'EVENT' ? 'bg-yellow-500' :
+                                                        tile.type === 'ZONE' ? 'bg-purple-600' :
+                                                            'bg-blue-700'
+                                        } ${isCorner ? 'rounded-t-lg' : 'rounded-t'}`}>
+                                        <span className={`px-1 text-center ${isCorner ? 'text-[0.7rem] font-extrabold' : 'text-[0.55rem] font-black'} uppercase tracking-tight leading-none text-white drop-shadow-lg`}>
                                             {tile.name}
                                         </span>
                                     </div>
 
-                                    { /* Background */}
-                                    <div className={`absolute inset-0 z-0 
-                                    ${tile.type === 'EVENT' ? 'bg-yellow-50' : ''}
-                                    ${tile.type === 'ZONE' || tile.type === 'AUDIT' || tile.type === 'CRISIS' ? 'bg-gray-200' : ''}
-                                    ${tile.type === 'START' ? 'bg-white' : ''}
-                                    ${tile.type === 'PROPERTY' && tile.color?.includes('blue-600') ? 'bg-blue-50' : ''}
-                                    ${tile.type === 'PROPERTY' && tile.color?.includes('blue-400') ? 'bg-blue-50' : ''}
-                                    ${tile.type === 'PROPERTY' && tile.color?.includes('blue-300') ? 'bg-blue-50/50' : ''}
-                                    ${tile.type === 'PROPERTY' && tile.color?.includes('cyan') ? 'bg-cyan-50' : ''}
-                                    ${tile.type === 'PROPERTY' && tile.color?.includes('gray') ? 'bg-gray-100' : ''}
-                                `}></div>
+                                    { /* Background - White/Light */}
+                                    <div className={`absolute inset-0 z-0 bg-white ${isCorner ? 'rounded-lg' : 'rounded'}`}></div>
 
                                     { /* Body Content */}
-                                    <div className={`flex flex-col items-center justify-center text-center w-full h-full z-20 pt-[18%] px-0.5 ${tile.textColor || 'text-black'}`}>
-                                        <div className="flex-grow flex flex-col items-center justify-center w-full -mt-3 gap-1.5">
+                                    <div className={`flex flex-col items-center justify-center text-center w-full h-full z-20 pt-[22%] px-0.5 text-gray-800`}>
+                                        <div className="flex-grow flex flex-col items-center justify-center w-full -mt-2 gap-1">
                                             <div className="pointer-events-none transition-all duration-300 group-hover:scale-110">
                                                 {(() => {
                                                     if (tile.type === 'START') {
@@ -1016,53 +1251,251 @@ export default function Dashboard({ properties }: PageProps) {
                                     </div>
 
                                     {/* Multiplayer Pawn Logic */}
-                                    {Array.isArray(players) && players.map((player, idx) => {
-                                        if (!player) return null;
-                                        const pos = player.position || 0;
-                                        if (pos !== tile.index) return null;
-                                        const offset = idx * 6;
-                                        const isCurrentMoving = isMoving && (turn % players.length) === idx;
+                                    <>
+                                        {(() => {
+                                            // Get all players on this tile OR at position 0 if this is START tile
+                                            let playersOnTile = Array.isArray(players)
+                                                ? players.filter(p => {
+                                                    if (!p) return false;
+                                                    const pos = p.position || 0;
+                                                    // If START tile (index 0), show players at position 0 to the left
+                                                    if (tile.index === 0 && pos === 0) return true;
+                                                    // Otherwise show players at their actual position (> 0)
+                                                    return pos === tile.index && pos > 0;
+                                                })
+                                                : [];
 
-                                        return (
-                                            <div
-                                                key={player.id || idx}
-                                                className="absolute inset-0 flex items-end justify-end pb-1 pr-1 z-50 pointer-events-none"
-                                                style={{
-                                                    transform: `translateX(-${offset}px) translateY(-${offset}px)`,
-                                                    animation: isCurrentMoving && isJumping
-                                                        ? 'pawnJump 0.4s ease-out infinite'
-                                                        : 'pawnEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
-                                                }}
-                                            >
-                                                <div className="relative flex flex-col items-center group" style={{ transform: 'scale(0.45)', transformOrigin: 'bottom right' }}>
-                                                    <div className={`absolute inset-0 bg-${player.color || 'blue'}-500/40 blur-xl rounded-full scale-150 animate-pulse`}></div>
+                                            // Sort players by ID to ensure consistent order (1, 2, 3...)
+                                            playersOnTile.sort((a, b) => a.id - b.id);
 
-                                                    <div className="absolute -top-10 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        {player.name}
-                                                    </div>
+                                            return playersOnTile.map((player, localIdx) => {
+                                                const globalIdx = players.findIndex(p => p?.id === player.id);
+                                                const isCurrentMoving = isMoving && (turn % players.length) === globalIdx;
+                                                const playerPos = player.position || 0;
+                                                const isCurrentTurn = (turn % players.length) === globalIdx;
 
-                                                    <svg
-                                                        className="w-24 h-32 drop-shadow-[0_10px_15px_rgba(0,0,0,0.5)] z-10"
-                                                        viewBox="0 0 100 140"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
+                                                // Center alignment (no horizontal spread)
+                                                // Pawns will stack on top of each other, current turn player on top (handled by zIndex)
+                                                const xOffset = 0;
+
+                                                // Scale configuration
+                                                const pawnScale = isCurrentTurn ? 0.6 : 0.4;
+                                                // Z-index: Active player on top, others layered
+                                                const zIndex = isCurrentTurn ? 100 : 50 + localIdx;
+
+                                                return (
+                                                    <div
+                                                        key={player.id || globalIdx}
+                                                        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                                                        style={{ zIndex }}
                                                     >
-                                                        <defs>
-                                                            <linearGradient id={`pawnGradient-${player.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                                                                <stop offset="0%" stopColor="#60A5FA" />
-                                                                <stop offset="100%" stopColor="#1E3A8A" />
-                                                            </linearGradient>
-                                                        </defs>
-                                                        <ellipse cx="50" cy="125" rx="42" ry="12" fill="#1E3A8A" fillOpacity="0.4" />
-                                                        <ellipse cx="50" cy="120" rx="40" ry="12" fill={`url(#pawnGradient-${player.id})`} stroke="#FFFFFF33" strokeWidth="1" />
-                                                        <path d="M50 115C75 115 85 105 85 95C85 85 75 75 50 65C25 75 15 85 15 95C15 105 25 115 50 115Z" fill={`url(#pawnGradient-${player.id})`} stroke="#FFFFFF33" strokeWidth="1" />
-                                                        <path d="M50 65L35 35C35 35 35 25 50 25C65 25 65 35 65 35L50 65Z" fill={`url(#pawnGradient-${player.id})`} />
-                                                        <circle cx="50" cy="20" r="15" fill={`url(#pawnGradient-${player.id})`} stroke="#FFFFFF66" strokeWidth="2" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                                        <div
+                                                            className="transition-transform duration-300 flex flex-col items-center"
+                                                            style={{
+                                                                // Use specific translate based on state
+                                                                transform: playerPos === 0
+                                                                    // For Start Position (Left Side)
+                                                                    ? `translate(-130px, ${localIdx * 30}px) scale(${pawnScale})`
+                                                                    // For Board Tiles (Stacked Center)
+                                                                    // 25px down from center puts it right on the icon
+                                                                    : `translateY(25px) scale(${pawnScale})`,
+                                                                animation: isCurrentMoving && isJumping
+                                                                    ? 'pawnJump 0.3s ease-in-out infinite'
+                                                                    : 'pawnEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+                                                            }}
+                                                        >
+
+                                                            {/* Moving border effect */}
+                                                            {/* Moving border effect REMOVED as per request */}
+
+                                                            <svg
+                                                                className="w-20 h-24 drop-shadow-[0_8px_12px_rgba(0,0,0,0.5)] z-10"
+                                                                viewBox="0 0 100 120"
+                                                                fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <defs>
+                                                                    <linearGradient id={`pieceGradient-${player.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                                                                        {player.color === 'red' && (
+                                                                            <>
+                                                                                <stop offset="0%" stopColor="#fca5a5" />
+                                                                                <stop offset="50%" stopColor="#ef4444" />
+                                                                                <stop offset="100%" stopColor="#991b1b" />
+                                                                            </>
+                                                                        )}
+                                                                        {player.color === 'blue' && (
+                                                                            <>
+                                                                                <stop offset="0%" stopColor="#93c5fd" />
+                                                                                <stop offset="50%" stopColor="#3b82f6" />
+                                                                                <stop offset="100%" stopColor="#1e3a8a" />
+                                                                            </>
+                                                                        )}
+                                                                        {player.color === 'green' && (
+                                                                            <>
+                                                                                <stop offset="0%" stopColor="#86efac" />
+                                                                                <stop offset="50%" stopColor="#22c55e" />
+                                                                                <stop offset="100%" stopColor="#14532d" />
+                                                                            </>
+                                                                        )}
+                                                                        {player.color === 'yellow' && (
+                                                                            <>
+                                                                                <stop offset="0%" stopColor="#fde047" />
+                                                                                <stop offset="50%" stopColor="#eab308" />
+                                                                                <stop offset="100%" stopColor="#854d0e" />
+                                                                            </>
+                                                                        )}
+                                                                        {player.color === 'orange' && (
+                                                                            <>
+                                                                                <stop offset="0%" stopColor="#fdba74" />
+                                                                                <stop offset="50%" stopColor="#f97316" />
+                                                                                <stop offset="100%" stopColor="#9a3412" />
+                                                                            </>
+                                                                        )}
+                                                                        {player.color === 'purple' && (
+                                                                            <>
+                                                                                <stop offset="0%" stopColor="#c4b5fd" />
+                                                                                <stop offset="50%" stopColor="#a855f7" />
+                                                                                <stop offset="100%" stopColor="#581c87" />
+                                                                            </>
+                                                                        )}
+                                                                        {!['red', 'blue', 'green', 'yellow', 'orange', 'purple'].includes(player.color) && (
+                                                                            <>
+                                                                                <stop offset="0%" stopColor="#93c5fd" />
+                                                                                <stop offset="50%" stopColor="#3b82f6" />
+                                                                                <stop offset="100%" stopColor="#1e3a8a" />
+                                                                            </>
+                                                                        )}
+                                                                    </linearGradient>
+                                                                </defs>
+
+                                                                {/* Shadow */}
+                                                                <ellipse cx="50" cy="110" rx="30" ry="8" fill="rgba(0,0,0,0.3)" />
+
+                                                                {/* Different piece for each player */}
+                                                                {(() => {
+                                                                    const playerIndex = players.findIndex(p => p?.id === player.id) + 1;
+
+                                                                    // Player 1: Car
+                                                                    if (playerIndex === 1) {
+                                                                        return (
+                                                                            <>
+                                                                                {/* Car body */}
+                                                                                <rect x="20" y="70" width="60" height="25" rx="4" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Car roof */}
+                                                                                <path d="M30 70 L30 55 L70 55 L70 70" fill={`url(#pieceGradient-${player.id})`} opacity="0.9" />
+                                                                                {/* Windows */}
+                                                                                <rect x="35" y="58" width="12" height="10" fill="rgba(135,206,250,0.6)" />
+                                                                                <rect x="53" y="58" width="12" height="10" fill="rgba(135,206,250,0.6)" />
+                                                                                {/* Wheels */}
+                                                                                <circle cx="32" cy="95" r="7" fill="#2d3748" />
+                                                                                <circle cx="68" cy="95" r="7" fill="#2d3748" />
+                                                                            </>
+                                                                        );
+                                                                    }
+
+                                                                    // Player 2: Top Hat
+                                                                    if (playerIndex === 2) {
+                                                                        return (
+                                                                            <>
+                                                                                {/* Hat brim */}
+                                                                                <ellipse cx="50" cy="90" rx="30" ry="8" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Hat body */}
+                                                                                <rect x="35" y="50" width="30" height="40" rx="2" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Hat band */}
+                                                                                <rect x="33" y="75" width="34" height="6" fill="rgba(0,0,0,0.3)" />
+                                                                                {/* Shine */}
+                                                                                <ellipse cx="45" cy="60" rx="8" ry="15" fill="rgba(255,255,255,0.3)" />
+                                                                            </>
+                                                                        );
+                                                                    }
+
+                                                                    // Player 3: Boot
+                                                                    if (playerIndex === 3) {
+                                                                        return (
+                                                                            <>
+                                                                                {/* Boot sole */}
+                                                                                <ellipse cx="50" cy="95" rx="25" ry="8" fill={`url(#pieceGradient-${player.id})`} opacity="0.8" />
+                                                                                {/* Boot foot */}
+                                                                                <rect x="30" y="75" width="35" height="20" rx="3" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Boot shaft */}
+                                                                                <rect x="35" y="45" width="25" height="35" rx="2" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Boot top */}
+                                                                                <rect x="33" y="45" width="29" height="8" rx="2" fill={`url(#pieceGradient-${player.id})`} opacity="0.7" />
+                                                                            </>
+                                                                        );
+                                                                    }
+
+                                                                    // Player 4: Battleship
+                                                                    if (playerIndex === 4) {
+                                                                        return (
+                                                                            <>
+                                                                                {/* Ship hull */}
+                                                                                <path d="M25 85 L75 85 L70 95 L30 95 Z" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Ship deck */}
+                                                                                <rect x="30" y="70" width="40" height="15" rx="2" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Ship tower */}
+                                                                                <rect x="40" y="55" width="20" height="15" rx="1" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Cannons */}
+                                                                                <rect x="25" y="75" width="8" height="3" fill="rgba(0,0,0,0.4)" />
+                                                                                <rect x="67" y="75" width="8" height="3" fill="rgba(0,0,0,0.4)" />
+                                                                            </>
+                                                                        );
+                                                                    }
+
+                                                                    // Player 5: Dog
+                                                                    if (playerIndex === 5) {
+                                                                        return (
+                                                                            <>
+                                                                                {/* Dog body */}
+                                                                                <ellipse cx="50" cy="75" rx="20" ry="15" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Dog head */}
+                                                                                <circle cx="65" cy="65" r="12" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Dog snout */}
+                                                                                <ellipse cx="72" cy="68" rx="6" ry="5" fill={`url(#pieceGradient-${player.id})`} opacity="0.8" />
+                                                                                {/* Dog ears */}
+                                                                                <ellipse cx="60" cy="58" rx="5" ry="8" fill={`url(#pieceGradient-${player.id})`} opacity="0.9" />
+                                                                                <ellipse cx="70" cy="58" rx="5" ry="8" fill={`url(#pieceGradient-${player.id})`} opacity="0.9" />
+                                                                                {/* Dog legs */}
+                                                                                <rect x="38" y="85" width="6" height="12" rx="2" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                <rect x="56" y="85" width="6" height="12" rx="2" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Dog tail */}
+                                                                                <path d="M32 70 Q28 65 30 60" stroke={`url(#pieceGradient-${player.id})`} strokeWidth="4" fill="none" strokeLinecap="round" />
+                                                                            </>
+                                                                        );
+                                                                    }
+
+                                                                    // Player 6: Iron
+                                                                    if (playerIndex === 6) {
+                                                                        return (
+                                                                            <>
+                                                                                {/* Iron base */}
+                                                                                <path d="M25 95 L75 95 L70 85 L30 85 Z" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Iron body */}
+                                                                                <path d="M30 85 L70 85 L65 60 L35 60 Z" fill={`url(#pieceGradient-${player.id})`} />
+                                                                                {/* Iron handle */}
+                                                                                <path d="M40 60 Q50 45 60 60" stroke={`url(#pieceGradient-${player.id})`} strokeWidth="6" fill="none" strokeLinecap="round" />
+                                                                                {/* Steam holes */}
+                                                                                <circle cx="45" cy="75" r="2" fill="rgba(0,0,0,0.3)" />
+                                                                                <circle cx="50" cy="75" r="2" fill="rgba(0,0,0,0.3)" />
+                                                                                <circle cx="55" cy="75" r="2" fill="rgba(0,0,0,0.3)" />
+                                                                            </>
+                                                                        );
+                                                                    }
+
+                                                                    // Default fallback
+                                                                    return (
+                                                                        <>
+                                                                            <circle cx="50" cy="70" r="20" fill={`url(#pieceGradient-${player.id})`} />
+                                                                        </>
+                                                                    );
+                                                                })()}
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            });
+                                        })()}
+                                    </>
                                 </div>
                             );
                         })}
@@ -1076,7 +1509,7 @@ export default function Dashboard({ properties }: PageProps) {
                 }
                 @keyframes pawnJump {
                     0%, 100% { transform: translateY(0) scale(0.45); }
-                    50% { transform: translateY(-30px) scale(0.4, 0.55); }
+                    50% { transform: translateY(-20px) scale(0.42, 0.52); }
                 }
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(10px); }

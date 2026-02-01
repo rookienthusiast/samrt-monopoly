@@ -28,7 +28,9 @@ class GameController extends Controller
                 ['id' => 1, 'name' => 'Player 1', 'color' => 'red', 'position' => 0, 'money' => 1500],
                 ['id' => 2, 'name' => 'Player 2', 'color' => 'blue', 'position' => 0, 'money' => 1500],
                 ['id' => 3, 'name' => 'Player 3', 'color' => 'green', 'position' => 0, 'money' => 1500],
-                ['id' => 4, 'name' => 'Player 4', 'color' => 'yellow', 'position' => 0, 'money' => 1500]
+                ['id' => 4, 'name' => 'Player 4', 'color' => 'yellow', 'position' => 0, 'money' => 1500],
+                ['id' => 5, 'name' => 'Player 5', 'color' => 'orange', 'position' => 0, 'money' => 1500],
+                ['id' => 6, 'name' => 'Player 6', 'color' => 'purple', 'position' => 0, 'money' => 1500]
             ],
             'board_state' => [],
             'logs' => ['> Room Created']
@@ -94,6 +96,16 @@ class GameController extends Controller
         $room->update($request->only(['players', 'status', 'logs', 'board_state']));
 
         return response()->json(['success' => true]);
+    }
+
+    public function deleteAllRooms() 
+    {
+        GameRoom::truncate();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'All rooms deleted successfully'
+        ]);
     }
 
     public function dashboard(): Response
