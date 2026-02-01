@@ -7,23 +7,23 @@ output_seeder_path = 'database/seeders/PropertySeeder.php'
 def parse_money(value):
     if pd.isna(value) or value == '-':
         return 0
-    
+
     s = str(value).lower().replace('rp', '').replace('.', '').replace(',', '.').strip()
     multiplier = 1
-    
+
     if 'jt' in s or 'juta' in s:
         multiplier = 1_000_000
         s = s.replace('jt', '').replace('juta', '')
     elif 'm' in s or 'miliar' in s:
         multiplier = 1_000_000_000
         s = s.replace('m', '').replace('miliar', '')
-        
-    # Handle ranges "300 - 500" -> Take average or min? Let's take max for safety or average.
-    # For a game, definitive values are better. Let's take the first value if range.
+
+
+
     if '-' in s:
         parts = s.split('-')
-        s = parts[0].strip() # Take minimum cost
-        
+        s = parts[0].strip()
+
     try:
         return float(s) * multiplier
     except:
@@ -31,18 +31,18 @@ def parse_money(value):
 
 def generate_seeder():
     xl = pd.ExcelFile(file_path)
-    
+
     properties = []
-    
-    # 1. Parse HOTEL BUDGET
+
+
     if '1 (hotel budget)' in xl.sheet_names:
         df = xl.parse('1 (hotel budget)')
-        # Hardcoding extraction based on known structure/analysis
+
         prop = {
             'name': 'Hotel Budget',
             'slug': 'hotel-budget',
             'type': 'commercial',
-            'base_price': 2_500_000_000, # L0 Value estimate
+            'base_price': 2_500_000_000,
             'levels': [
                 {'level': 1, 'cost': 300_000_000, 'risk_fraud': 0, 'sdg': 0},
                 {'level': 2, 'cost': 500_000_000, 'risk_fraud': 0, 'sdg': 0},
@@ -53,22 +53,22 @@ def generate_seeder():
         }
         properties.append(prop)
 
-    # 2. Parse LAUNDRY
+
     if '37 - Laundry' in xl.sheet_names:
          prop = {
             'name': 'Laundry',
             'slug': 'laundry',
             'type': 'commercial',
-            'base_price': 250_000_000, 
+            'base_price': 250_000_000,
             'levels': [
-                {'level': 1, 'cost': 50_000_000, 'risk_fraud': 0, 'sdg': 0}, # Guesswork based on scale
+                {'level': 1, 'cost': 50_000_000, 'risk_fraud': 0, 'sdg': 0},
                 {'level': 2, 'cost': 100_000_000, 'risk_fraud': 0, 'sdg': 0},
                 {'level': 3, 'cost': 150_000_000, 'risk_fraud': -1, 'sdg': 0},
             ]
         }
          properties.append(prop)
 
-    # Generate PHP Code
+
     php_code = """<?php
 
 namespace Database\Seeders;
@@ -82,7 +82,7 @@ class PropertySeeder extends Seeder
     {
         $properties = [
 """
-    
+
     for p in properties:
         php_code += "            [\n"
         php_code += f"                'name' => '{p['name']}',\n"
@@ -127,7 +127,7 @@ class PropertySeeder extends Seeder
     }
 }
 """
-    
+
     with open(output_seeder_path, 'w') as f:
         f.write(php_code)
     print(f"Seeder generated at {output_seeder_path}")

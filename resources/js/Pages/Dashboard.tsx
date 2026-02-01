@@ -2,7 +2,7 @@
 import { Head } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
-// --- TYPES ---
+
 interface PropertyLevel {
     id: number;
     level: number;
@@ -18,7 +18,7 @@ interface Property {
     type: string;
     base_price: string;
     levels: PropertyLevel[];
-    board_position?: number; 
+    board_position?: number;
 }
 
 interface TileData {
@@ -26,14 +26,14 @@ interface TileData {
     type: 'START' | 'PROPERTY' | 'CHANCE' | 'JAIL' | 'FREE_PARKING' | 'GO_TO_JAIL' | 'TAX' | 'UTILITY';
     name: string;
     property?: Property;
-    color?: string; 
+    color?: string;
 }
 
 interface PageProps {
     properties: Property[];
 }
 
-// --- ASSETS & HELPERS ---
+
 const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
     const tiles: TileData[] = Array(40).fill(null).map((_, i) => ({
         index: i,
@@ -50,10 +50,10 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
     dbProperties.forEach(p => {
         let slot = -1;
         let color = 'bg-indigo-300';
-        
+
         if (p.slug === 'hotel-budget') { slot = 1; color = 'bg-purple-400'; }
         else if (p.slug === 'laundry') { slot = 3; color = 'bg-orange-400'; }
-        
+
         if (slot !== -1) {
             tiles[slot] = {
                 index: slot,
@@ -68,19 +68,19 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
     return tiles;
 };
 
-// --- 3D DICE COMPONENT ---
+
 const Dice3D = ({ value, rolling }: { value: number, rolling: boolean }) => {
-    // Mapping dot positions for standard dice faces
+
     const dotPositions: Record<number, string[]> = {
         1: ['justify-center items-center'],
-        2: ['justify-between'], // Top-left, Bottom-right handled by inner logic? simplistic 2 dots
+        2: ['justify-between'],
         3: ['justify-between'],
         4: ['justify-between'],
         5: ['justify-between'],
         6: ['justify-between']
     };
 
-    // Helper to render dots based on number
+
     const renderDots = (val: number) => {
         const dots = [];
         if (val === 1) dots.push(<div key="1" className="w-3 h-3 bg-black rounded-full"></div>);
@@ -142,13 +142,13 @@ export default function Dashboard({ properties }: PageProps) {
         setLogs(prev => [msg, ...prev.slice(0, 5)]);
     };
 
-    // Grid Mapping (Same as before)
+
     const getGridStyle = (index: number) => {
         let row = 1;
         let col = 1;
-        if (index >= 0 && index <= 10) { row = 11; col = 11 - index; } 
-        else if (index >= 11 && index <= 20) { col = 1; row = 11 - (index - 10); } 
-        else if (index >= 21 && index <= 30) { row = 1; col = 1 + (index - 20); } 
+        if (index >= 0 && index <= 10) { row = 11; col = 11 - index; }
+        else if (index >= 11 && index <= 20) { col = 1; row = 11 - (index - 10); }
+        else if (index >= 21 && index <= 30) { row = 1; col = 1 + (index - 20); }
         else if (index >= 31 && index <= 39) { col = 11; row = 1 + (index - 30); }
         return { gridRow: row, gridColumn: col };
     };
@@ -162,11 +162,11 @@ export default function Dashboard({ properties }: PageProps) {
             const d1 = Math.floor(Math.random() * 6) + 1;
             const d2 = Math.floor(Math.random() * 6) + 1;
             setDice([d1, d2]);
-            
+
             const total = d1 + d2;
             const newPos = (playerPosition + total) % 40;
             setPlayerPosition(newPos);
-            
+
             addLog(`> Rolled ${total} (${d1} + ${d2}). Moving to #${newPos}`);
             setIsRolling(false);
         }, 800);
@@ -177,50 +177,50 @@ export default function Dashboard({ properties }: PageProps) {
             <Head title="Smart Monopoly" />
 
             <div className="flex w-full max-w-[1600px] h-[95vh] gap-8">
-                
-                {/* --- LEFT: THE BOARD (Now with Glass Effect) --- */}
+
+                {}
                 <div className="flex-grow relative bg-[#CDE6D0] rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden border-[12px] border-[#8B0000]">
-                    {/* Background Texture */}
+                    {}
                     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none"></div>
 
-                    {/* Center Branding */}
+                    {}
                     <div className="absolute inset-[13%] flex flex-col items-center justify-center transform -rotate-45 opacity-15 pointer-events-none select-none">
                         <h1 className="text-9xl font-black text-[#5C0000] tracking-tighter drop-shadow-lg">SMART</h1>
                         <h1 className="text-8xl font-black text-[#5C0000] tracking-widest drop-shadow-md">OPOLY</h1>
                         <p className="mt-4 text-2xl font-bold uppercase tracking-[0.5em] text-red-900">Business Simulation</p>
                     </div>
 
-                    {/* The Grid Container */}
+                    {}
                     <div className="absolute inset-0 grid grid-rows-11 grid-cols-11 gap-0.5 box-border p-1">
                         {boardTiles.map((tile) => {
                             const gridStyle = getGridStyle(tile.index);
                             return (
-                                <div 
+                                <div
                                     key={tile.index}
                                     style={gridStyle}
                                     className={`
-                                        relative border-[0.5px] border-gray-600/30 flex flex-col justify-between 
-                                        ${tile.color || 'bg-[#DBEGD6]'} 
+                                        relative border-[0.5px] border-gray-600/30 flex flex-col justify-between
+                                        ${tile.color || 'bg-[#DBEGD6]'}
                                         transition-all duration-300
                                         ${tile.index === playerPosition ? 'z-20 scale-105 shadow-[0_0_20px_rgba(255,255,0,0.6)] ring-2 ring-yellow-400' : 'hover:scale-110 hover:z-10 hover:shadow-lg'}
                                     `}
                                 >
-                                    {/* Property Header (Color Bar) */}
+                                    {}
                                     {tile.type === 'PROPERTY' && (
                                         <div className={`h-[22%] w-full border-b border-black/20 ${tile.color}`}></div>
                                     )}
-                                    
-                                    {/* Tile Content */}
+
+                                    {}
                                     <div className="flex-grow flex flex-col justify-center items-center text-center p-1">
                                         <span className="text-[0.6rem] font-bold leading-tight text-gray-800 uppercase">{tile.name}</span>
                                         {tile.property && (
                                             <span className="text-[0.5rem] font-mono text-gray-600 mt-1">
-                                               {/* Rp {parseInt(tile.property.base_price)/1_000_000}M */}
+                                               {}
                                             </span>
                                         )}
                                     </div>
 
-                                    {/* Player Pawn */}
+                                    {}
                                     {tile.index === playerPosition && (
                                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                             <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-red-600 to-red-400 border-2 border-white shadow-[0_4px_6px_rgba(0,0,0,0.4)] animate-bounce"></div>
@@ -232,13 +232,13 @@ export default function Dashboard({ properties }: PageProps) {
                     </div>
                 </div>
 
-                {/* --- RIGHT: CONTROL PANEL (Futuristic Dashboard) --- */}
+                {}
                 <div className="w-[400px] flex flex-col gap-6">
-                    
-                    {/* 1. Player Card */}
+
+                    {}
                     <div className="relative overflow-hidden bg-slate-800/80 backdrop-blur-xl border border-slate-600 rounded-2xl p-6 shadow-2xl">
                         <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500 rounded-full blur-[80px] opacity-40"></div>
-                        
+
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <h2 className="text-sm font-bold text-blue-400 tracking-wider uppercase">Player 1</h2>
@@ -254,7 +254,7 @@ export default function Dashboard({ properties }: PageProps) {
                                     Rp 500<span className="text-sm">M</span>
                                 </span>
                             </div>
-                            
+
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="bg-black/30 p-2 rounded border border-white/5 text-center">
                                     <div className="text-xs text-gray-400 uppercase mb-1">Fatigue</div>
@@ -271,10 +271,10 @@ export default function Dashboard({ properties }: PageProps) {
                         </div>
                     </div>
 
-                    {/* 2. Action Area (Dice & Log) */}
+                    {}
                     <div className="flex-grow bg-slate-800/80 backdrop-blur-xl border border-slate-600 rounded-2xl p-6 shadow-2xl flex flex-col">
-                        
-                        {/* Terminal Log */}
+
+                        {}
                         <div className="flex-grow bg-[#0c0c0c] rounded-lg border border-gray-700 p-4 font-mono text-xs overflow-hidden relative mb-6">
                             <div className="absolute top-0 left-0 w-full h-1 bg-green-500/50 shadow-[0_0_10px_#22c55e]"></div>
                             <div className="space-y-1 h-full overflow-y-auto custom-scrollbar">
@@ -286,20 +286,20 @@ export default function Dashboard({ properties }: PageProps) {
                             </div>
                         </div>
 
-                        {/* Dice Area */}
+                        {}
                         <div className="flex justify-center gap-8 mb-8 perspective-[1000px]">
                             <Dice3D value={dice[0]} rolling={isRolling} />
                             <Dice3D value={dice[1]} rolling={isRolling} />
                         </div>
 
-                        {/* Main Button */}
-                        <button 
+                        {}
+                        <button
                             onClick={rollDice}
                             disabled={isRolling}
                             className={`
                                 group relative w-full py-4 rounded-xl font-black text-xl tracking-widest uppercase transition-all duration-200
-                                ${isRolling 
-                                    ? 'bg-gray-600 cursor-not-allowed text-gray-400' 
+                                ${isRolling
+                                    ? 'bg-gray-600 cursor-not-allowed text-gray-400'
                                     : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:scale-[1.02] active:scale-[0.98]'
                                 }
                             `}

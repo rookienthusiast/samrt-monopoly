@@ -11,12 +11,12 @@ class GameController extends Controller
 {
     public function dashboard(): Response
     {
-        // Fetch properties with their levels
+
         $properties = Property::with('levels')->get();
 
         return Inertia::render('Dashboard', [
             'properties' => $properties,
-            'gameStatus' => 'demo' 
+            'gameStatus' => 'demo'
         ]);
     }
 }
