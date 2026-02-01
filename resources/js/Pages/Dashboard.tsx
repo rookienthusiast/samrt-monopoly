@@ -1,6 +1,6 @@
 
 import { Head } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 
 interface PropertyLevel {
@@ -143,6 +143,7 @@ const Dice3D = ({ value, rolling, transform, rotation }: { value: number, rollin
 
 
 export default function Dashboard({ properties }: PageProps) {
+    const audioCtxRef = useRef<AudioContext | null>(null);
     const [dice, setDice] = useState<[number, number]>([1, 1]);
     const [diceTransforms, setDiceTransforms] = useState([
         'translate(-40px, 0px) rotate(0deg)',
@@ -184,57 +185,18 @@ export default function Dashboard({ properties }: PageProps) {
 
     const playSound = (type: 'dice' | 'step') => {
         try {
-            // Check for AudioContext support
-            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-            if (!AudioContext) return;
-
-            const ctx = new AudioContext();
-            const now = ctx.currentTime;
-
-            if (type === 'step') {
-                // Synthesize a short "tick" or "step" sound (high pitch decaying sine)
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, now);
-                osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
-
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start(now);
-                osc.stop(now + 0.1);
-            } else if (type === 'dice') {
-                // Synthesize a "rattle" sound (multiple short burst of noise/square waves)
-                for (let i = 0; i < 6; i++) {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-
-                    osc.type = 'square';
-                    // Random pitch for rattle effect
-                    osc.frequency.setValueAtTime(200 + Math.random() * 200, now + i * 0.06);
-
-                    gain.gain.setValueAtTime(0.05, now + i * 0.06);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.04);
-
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-
-                    osc.start(now + i * 0.06);
-                    osc.stop(now + i * 0.06 + 0.05);
-                }
-            }
+            const file = type === 'dice' ? '/sounds/dice-roll.mp3' : '/sounds/pawn-move.mp3';
+            const audio = new Audio(file);
+            audio.volume = type === 'dice' ? 0.8 : 0.5;
+            audio.play().catch(e => console.log('Audio play failed', e));
         } catch (e) {
-            console.error("Audio synth error:", e);
+            console.error("Audio error:", e);
         }
     };
 
     const rollDice = () => {
         if (isRolling || isMoving) return;
+
         setIsRolling(true);
         setShowDice(true);
         setRollTotal(null);
@@ -507,7 +469,16 @@ export default function Dashboard({ properties }: PageProps) {
                                         {tile.name}
                                     </span>
                                 </div>
-                                <div className="absolute inset-0 bg-white z-0"></div>
+                                <div className={`absolute inset-0 z-0 
+                                    ${tile.type === 'EVENT' ? 'bg-yellow-50' : ''}
+                                    ${tile.type === 'ZONE' || tile.type === 'AUDIT' || tile.type === 'CRISIS' ? 'bg-gray-200' : ''}
+                                    ${tile.type === 'START' ? 'bg-white' : ''}
+                                    ${tile.type === 'PROPERTY' && tile.color?.includes('blue-600') ? 'bg-blue-50' : ''}
+                                    ${tile.type === 'PROPERTY' && tile.color?.includes('blue-400') ? 'bg-blue-50' : ''}
+                                    ${tile.type === 'PROPERTY' && tile.color?.includes('blue-300') ? 'bg-blue-50/50' : ''}
+                                    ${tile.type === 'PROPERTY' && tile.color?.includes('cyan') ? 'bg-cyan-50' : ''}
+                                    ${tile.type === 'PROPERTY' && tile.color?.includes('gray') ? 'bg-gray-100' : ''}
+                                `}></div>
 
                                 <div className={`flex flex-col items-center justify-center text-center w-full h-full z-20 pt-[18%] px-0.5 ${tile.textColor || 'text-black'}`}>
                                     {/* Body: Priority Icon Rendering to prevent double icons */}
