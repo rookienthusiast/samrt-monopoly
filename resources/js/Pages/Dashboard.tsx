@@ -300,7 +300,7 @@ export default function Dashboard({ properties }: PageProps) {
         // 1. Reset Players to start
         const resetPlayers = players.map(p => ({ ...p, money: 1500, position: 0 })); // Simplified reset
         setPlayers(resetPlayers);
-        // setPlayerPosition(0); // This was local state? Revisit if needed.
+        setTurn(0); // Reset turn to Player 1
 
         // 2. Sync DB
         try {
@@ -308,9 +308,11 @@ export default function Dashboard({ properties }: PageProps) {
                 code: roomId,
                 players: resetPlayers,
                 status: 'PLAYING',
-                logs: ["> Game Reset by Admin"]
+                logs: ["> Game Reset by Admin"],
+                turn: 0,
+                current_turn: 0
             });
-            addLog("> Game Reset!");
+            setLogs(["> Game Reset by Admin"]); // Reset local logs
             setShowGameMenu(false);
         } catch (e) { console.error(e); }
     };

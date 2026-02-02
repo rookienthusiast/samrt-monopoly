@@ -374,7 +374,18 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                         className={`
                                 relative flex flex-col items-center justify-center p-0.5
                                 bg-white/95 border border-slate-200
-                                z-10 transition-all duration-300 group
+                                transition-all duration-300 group
+                                ${(() => {
+                                // Check if players are on this tile to boost Z-Index
+                                const hasPlayers = players.some(p => {
+                                    const pos = p.position || 0;
+                                    if (tile.index === 0) return pos === 0;
+                                    return pos === tile.index;
+                                });
+                                // If players are here, lift the tile above neighbors (z-30) so pawns don't get clipped
+                                // If moving player, z-40 is handled below, so we use z-30 as base for occupied tiles
+                                return hasPlayers ? 'z-30' : 'z-10';
+                            })()}
                                 ${(() => {
                                 // Check if any player is currently moving on this tile
                                 let borderColor = 'border-yellow-300'; // Default fallback
@@ -532,8 +543,12 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                                     })
                                     : [];
 
-                                // Sort players by ID to ensure consistent order (1, 2, 3...)
-                                playersOnTile.sort((a, b) => a.id - b.id);
+                                // Sort players by ID to ensure consistent order
+                                playersOnTile.sort((a, b) => {
+                                    const idA = parseInt(String(a.id).replace(/\D/g, '')) || 0;
+                                    const idB = parseInt(String(b.id).replace(/\D/g, '')) || 0;
+                                    return idA - idB;
+                                });
 
                                 return playersOnTile.map((player, localIdx) => {
                                     const globalIdx = players.findIndex(p => p?.id === player.id);
@@ -541,13 +556,19 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                                     const playerPos = player.position || 0;
                                     const isCurrentTurn = (turn % players.length) === globalIdx;
 
-                                    // Center alignment (no horizontal spread)
-                                    // Pawns will stack on top of each other, current turn player on top (handled by zIndex)
-                                    const xOffset = 0;
+                                    // Horizontal alignment (Left to Right lineup)
+                                    const totalOnTile = playersOnTile.length;
+                                    // Spacing: 35px is enough to separate them visually if z-index is fixed
+                                    const spacing = 35;
+                                    // Calculate x-offset to center the group on the tile
+                                    const groupWidth = (totalOnTile - 1) * spacing;
+                                    const startX = -groupWidth / 2; // Start from left relative to center
 
-                                    // Scale configuration
-                                    const pawnScale = isCurrentTurn ? 0.6 : 0.4;
-                                    // Z-index: Active player on top, others layered
+                                    const xOffset = startX + (localIdx * spacing);
+
+                                    // Scale configuration (Slightly smaller to fit better)
+                                    const pawnScale = isCurrentTurn ? 0.55 : 0.45;
+                                    // Z-index: Active player on top, others ordered by position
                                     const zIndex = isCurrentTurn ? 100 : 50 + localIdx;
 
                                     return (
@@ -559,13 +580,8 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                                             <div
                                                 className="transition-transform duration-300 flex flex-col items-center"
                                                 style={{
-                                                    // Use specific translate based on state
-                                                    transform: playerPos === 0
-                                                        // For Start Position (Left Side)
-                                                        ? `translate(-130px, ${localIdx * 30}px) scale(${pawnScale})`
-                                                        // For Board Tiles (Stacked Center)
-                                                        // 25px down from center puts it right on the icon
-                                                        : `translateY(25px) scale(${pawnScale})`,
+                                                    // Use unified translate for all tiles including Start
+                                                    transform: `translate(${xOffset}px, 20px) scale(${pawnScale})`,
                                                     animation: isCurrentMoving && isJumping
                                                         ? 'pawnJump 0.3s ease-in-out infinite'
                                                         : 'pawnEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
