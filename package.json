@@ -3,8 +3,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build",
-        "dev": "vite"
+        "build": "vite build",
+        "dev": "vite",
+        "start": "concurrently \"php artisan serve\" \"npm run dev\" --names=laravel,vite"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
