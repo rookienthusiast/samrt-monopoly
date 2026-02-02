@@ -68,12 +68,18 @@ export default function Dashboard({ properties }: PageProps) {
     // Music Initialization (Default Mute)
     useEffect(() => {
         if (!bgMusicRef.current) {
-            // Init audio object but DO NOT auto-play
             bgMusicRef.current = new Audio('/sounds/funky_bg.mp3');
             bgMusicRef.current.loop = true;
             bgMusicRef.current.volume = 0.3;
         }
-        // No attemptPlay() call here
+
+        // Attempt Autoplay if state is true
+        if (isMusicPlaying) {
+            bgMusicRef.current.play().catch(() => {
+                // Autoplay blocked by browser policy - sync state to false
+                setIsMusicPlaying(false);
+            });
+        }
     }, []);
 
     // Auto-Resume Session
