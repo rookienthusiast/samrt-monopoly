@@ -41,11 +41,11 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
     const tiles: TileData[] = [
         // Top Row (0-10) - Moving Right
         { index: 0, type: 'START', name: 'Start', color: 'bg-black', textColor: 'text-white' },
-        { index: 1, type: 'PROPERTY', name: 'Hotel Budget', subName: '(20-30 kamar) (Rp 2.5M - 4M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 1, type: 'PROPERTY', name: 'Hotel Budget', subName: '(20-30 kamar) (Rp 2.5M - 4M)', color: 'bg-blue-600', textColor: 'text-black' },
         { index: 2, type: 'EVENT', name: 'EVENT', subName: 'Control Environment (Integrity & Ethical Values)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 3, type: 'EVENT', name: 'EVENT', subName: 'Control Environment (Independent Oversight)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 4, type: 'PROPERTY', name: 'Restoran menengah', subName: '(Rp 700jt - 1.2M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 5, type: 'PROPERTY', name: 'Pabrik Tekstil', subName: '(10M - 20M)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 4, type: 'PROPERTY', name: 'Restoran menengah', subName: '(Rp 700jt - 1.2M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 5, type: 'PROPERTY', name: 'Pabrik Tekstil', subName: '(10M - 20M)', color: 'bg-blue-600', textColor: 'text-black' },
         { index: 6, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Implementation)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 7, type: 'PROPERTY', name: 'Warung Kopi', subName: '(Rp 200jt - 350jt)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 8, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Objective Setting)', color: 'bg-yellow-400', textColor: 'text-black' },
@@ -85,7 +85,7 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
         { index: 36, type: 'PROPERTY', name: 'Pecel Ayam', subName: '(100 - 200jt)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 37, type: 'PROPERTY', name: 'Hotel Resort', subName: '(8M - 12M)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 38, type: 'EVENT', name: 'EVENT', subName: '', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 39, type: 'PROPERTY', name: 'Laundry', subName: '(Rp 250 - 450jt)', color: 'bg-blue-300', textColor: 'text-black' },
+        { index: 39, type: 'PROPERTY', name: 'Laundry', subName: '(Rp 250 - 450jt)', color: 'bg-blue-600', textColor: 'text-black' },
     ];
 
     return tiles;
