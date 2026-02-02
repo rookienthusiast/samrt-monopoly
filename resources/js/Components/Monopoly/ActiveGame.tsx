@@ -470,7 +470,7 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                                         // 2. SPECIFIC NAMES
                                         // JAIL / PENGADILAN -> Jail/Prisoner
                                         if (tile.type === 'JAIL' || tile.name?.toUpperCase().includes('PENGADILAN') || tile.name?.toUpperCase().includes('JAIL')) {
-                                            return <img src="https://img.icons8.com/color/96/prisoner.png" className="w-9 h-9 object-contain" alt="Jail" />;
+                                            return <img src="https://img.icons8.com/color/96/scales.png" className="w-10 h-10 object-contain" alt="Justice" />;
                                         }
 
                                         // 3. TYPES
@@ -481,7 +481,7 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
 
                                         // CRISIS -> Tax / Money
                                         if (tile.type === 'CRISIS') {
-                                            return <img src="https://img.icons8.com/color/96/sales-performance.png" className="w-8 h-8 object-contain" alt="Tax" />;
+                                            return <img src="https://img.icons8.com/color/96/tax.png" className="w-9 h-9 object-contain" alt="Crisis" />;
                                         }
 
                                         // AUDIT -> Policeman
@@ -491,7 +491,7 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
 
                                         // ZONE -> No Entry / Parking
                                         if (tile.type === 'ZONE') {
-                                            return <img src="https://img.icons8.com/color/96/road-closure.png" className="w-8 h-8 object-contain" alt="Zone" />;
+                                            return <img src="https://img.icons8.com/color/96/high-priority.png" className="w-8 h-8 object-contain" alt="Danger Zone" />;
                                         }
 
                                         // Backup check for Black tiles
