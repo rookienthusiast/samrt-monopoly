@@ -41,7 +41,7 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
     const tiles: TileData[] = [
         // Top Row (0-10) - Moving Right
         { index: 0, type: 'START', name: 'Start', color: 'bg-black', textColor: 'text-white' },
-        { index: 1, type: 'PROPERTY', name: 'Hotel Budget', subName: '(20-30 kamar) (Rp 2.5M - 4M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 1, type: 'PROPERTY', name: 'Hotel Budget', subName: '(20-30 kamar) (Rp 2.5M - 4M)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 2, type: 'EVENT', name: 'EVENT', subName: 'Control Environment (Integrity & Ethical Values)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 3, type: 'EVENT', name: 'EVENT', subName: 'Control Environment (Independent Oversight)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 4, type: 'PROPERTY', name: 'Restoran menengah', subName: '(Rp 700jt - 1.2M)', color: 'bg-blue-300', textColor: 'text-black' },
@@ -50,35 +50,13 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
         { index: 7, type: 'PROPERTY', name: 'Warung Kopi', subName: '(Rp 200jt - 350jt)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 8, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Objective Setting)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 9, type: 'PROPERTY', name: 'Rumah Sakit', subName: 'Pratama (4M - 6M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 10, type: 'AUDIT', name: 'AUDIT', subName: '(IA Governance Audit)', color: 'bg-black', textColor: 'text-white' },
+        { index: 10, type: 'AUDIT', name: 'AUDIT', subName: '(AI Governance Audit)', color: 'bg-black', textColor: 'text-white' },
 
         // Right Column (11-19) - Moving Down
-        { index: 11, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Risk Identification)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 12, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1,8M)', color: 'bg-sky-200', textColor: 'text-black' },
+        { index: 11, type: 'PROPERTY', name: 'Kost Mahasiswa', subName: '(1M - 1,8M)', color: 'bg-sky-200', textColor: 'text-black' },
+        { index: 12, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 13, type: 'PROPERTY', name: 'Minimarket', subName: '(900jt - 1,5M)', color: 'bg-sky-200', textColor: 'text-black' },
-        { index: 14, type: 'EVENT', name: 'EVENT', subName: 'Risk Assessment (Fraud Risk)', color: 'bg-yellow-400', textColor: 'text-black' },
-        // WARNING: To match the image order within 9 slots, "Audit Zone" must be shifted or something removed.
-        // Image has 10 items between corners. Grid has 9.
-        // User image order: Event, Kost, Event, Minimart, AuditZone, Cloud, Event, Apt, Event, Desa.
-        // My Logic: I will merge the two Risk Assessments into earlier slots or drop one.
-        // Let's drop "Event Fraud Risk" to fit "Desa Wisata".
-        // REVISED LIST to fit 9 slots:
-        // 11. EVENT Risk ID
-        // 12. Kost
-        // 13. Minimarket
-        // 14. AUDIT ZONE
-        // 15. Cloud Kitchen
-        // 16. EVENT Risk Mit
-        // 17. Sewa Apartemen
-        // 18. EVENT IT Controls
-        // 19. Desa Wisata
-
-        // Wait, user explicitly listed "EVENT Fraud Risk" in image.
-        // Maybe "Minimarket" and "Kost" share a color group but are separated by Event?
-        // Let's stick to my plan of dropping one Event to make space for Desa Wisata which is a Property.
-
-        // Re-applying with dropped Event:
-        { index: 14, type: 'ZONE', name: 'AUDIT ZONE', subName: '(biaya audit: 60-90jt)', color: 'bg-black', textColor: 'text-white' },
+        { index: 14, type: 'ZONE', name: 'AUDIT', subName: '(biaya audit: 60-90jt)', color: 'bg-red-600', textColor: 'text-white' },
         { index: 15, type: 'PROPERTY', name: 'Cloud Kitchen', subName: '(300jt - 400jt)', color: 'bg-cyan-400', textColor: 'text-black' },
         { index: 16, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Risk Mitigation)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 17, type: 'PROPERTY', name: 'Sewa Apartemen', subName: '(1,5 - 2M)', color: 'bg-cyan-400', textColor: 'text-black' },
@@ -89,13 +67,13 @@ const generateBoardTiles = (dbProperties: Property[]): TileData[] => {
         { index: 20, type: 'AUDIT', name: 'Pengadilan', subName: '(kasus hukum) (perdata - pidana)', color: 'bg-black', textColor: 'text-white' },
         { index: 21, type: 'EVENT', name: 'EVENT', subName: 'Control Activities (Policies & Procedures)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 22, type: 'PROPERTY', name: 'Pusat oleh-oleh', subName: '(1.3M - 1.6M)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 23, type: 'PROPERTY', name: 'Jasa Konsultan', subName: '(500 - 800jt)', color: 'bg-blue-300', textColor: 'text-black' },
-        { index: 24, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Internal Communication)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 25, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Quality Information)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 23, type: 'PROPERTY', name: 'Jasa Konsultan', subName: '(500 - 800jt)', color: 'bg-blue-400', textColor: 'text-black' },
+        { index: 24, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Quality Information)', color: 'bg-yellow-400', textColor: 'text-black' },
+        { index: 25, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (Internal Communication)', color: 'bg-yellow-400', textColor: 'text-black' },
         { index: 26, type: 'PROPERTY', name: 'Kawasan Kuliner', subName: '(2.2M - 3M)', color: 'bg-blue-300', textColor: 'text-black' },
         { index: 27, type: 'EVENT', name: 'EVENT', subName: 'Information & Communication (External Communication)', color: 'bg-yellow-400', textColor: 'text-black' },
-        { index: 28, type: 'ZONE', name: 'Audit Zone', subName: '(50 - 100jt)', color: 'bg-black', textColor: 'text-white' },
-        { index: 29, type: 'PROPERTY', name: 'Hotel Bisnis', subName: '(5 - 7 M)', color: 'bg-blue-600', textColor: 'text-black' },
+        { index: 28, type: 'ZONE', name: 'AUDIT ZONE', subName: '(80 - 100jt)', color: 'bg-red-600', textColor: 'text-white' },
+        { index: 29, type: 'PROPERTY', name: 'Hotel Bisnis', subName: '(5 - 7 M)', color: 'bg-blue-200', textColor: 'text-black' },
         { index: 30, type: 'CRISIS', name: 'CRISIS', subName: 'Systemic Fraud / ESG Shock', color: 'bg-black', textColor: 'text-white' },
 
         // Left Column (31-39) - Moving Up
@@ -262,9 +240,32 @@ export default function Dashboard({ properties }: PageProps) {
         return () => window.removeEventListener('click', handleInteraction);
     }, []);
 
-    // Start fresh every load (no local storage dependency for cross-device support)
+    // Auto-Resume Session
     useEffect(() => {
-        setIsResuming(false);
+        const savedRoomId = localStorage.getItem('monopoly_room_id');
+        if (savedRoomId) {
+            axios.post('/game/room/join', { code: savedRoomId }).then(res => {
+                if (res.data.success) {
+                    const room = res.data.room;
+                    setRoomId(room.code);
+                    if (room.players) {
+                        setPlayers(room.players);
+                        if (room.turn !== undefined) setTurn(room.turn);
+                        if (room.logs) setLogs(room.logs);
+                    }
+                    setRoomStatus(room.status);
+                    setGamePhase(room.status === 'LOBBY' ? 'SETUP' : 'PLAYING');
+                    addLog(`> Resumed Session: ${room.code}`);
+                }
+            }).catch(err => {
+                console.log("Resume failed", err);
+                localStorage.removeItem('monopoly_room_id');
+            }).finally(() => {
+                setIsResuming(false);
+            });
+        } else {
+            setIsResuming(false);
+        }
     }, []);
 
     const addLog = (msg: string) => {
@@ -365,6 +366,7 @@ export default function Dashboard({ properties }: PageProps) {
     const handleEnterRoom = (room: any) => {
         setRoomId(room.code);
         setRoomStatus(room.status);
+        localStorage.setItem('monopoly_room_id', room.code); // Save for refresh persistence
         // Load Full State from Server for Cross-Device Play
         if (room.players) {
             setPlayers(room.players);
@@ -869,7 +871,8 @@ export default function Dashboard({ properties }: PageProps) {
                         <div className="col-start-2 col-end-11 row-start-2 row-end-11 m-[2px] relative flex flex-col items-center justify-between p-6 bg-white rounded-xl border border-black/5 overflow-hidden shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)]">
 
                             {/* Center Top Player Info */}
-                            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[100] select-none transition-all duration-300">
+                            {/* Center Top Player Info - Moved to Top Left */}
+                            <div className="absolute top-8 left-8 z-[100] select-none transition-all duration-300">
                                 {(() => {
                                     const curPlayer = getCurrentPlayer();
                                     const curTile = boardTiles[curPlayer.position || 0];
@@ -877,16 +880,26 @@ export default function Dashboard({ properties }: PageProps) {
                                     // Helper to get colors based on tile
                                     const getTileColors = (t: any) => {
                                         if (t.type === 'START') return { bg: 'bg-red-600', text: 'text-red-600', border: 'border-red-600', light: 'bg-red-50' };
-                                        if (t.type === 'EVENT' || t.color?.includes('yellow')) return { bg: 'bg-yellow-500', text: 'text-yellow-600', border: 'border-yellow-400', light: 'bg-yellow-50' };
-                                        if (t.type === 'ZONE' || t.color?.includes('purple')) return { bg: 'bg-purple-600', text: 'text-purple-600', border: 'border-purple-400', light: 'bg-purple-50' };
-                                        if (t.type === 'AUDIT' || t.type === 'CRISIS' || t.color?.includes('black')) return { bg: 'bg-gray-800', text: 'text-gray-800', border: 'border-gray-600', light: 'bg-gray-100' };
+                                        if (t.type === 'EVENT' || t.color?.includes('yellow')) return { bg: 'bg-yellow-500', text: 'text-yellow-700', border: 'border-yellow-400', light: 'bg-yellow-50' };
 
-                                        // Property fallback (extract color from classname is risky in JIT, best effort)
+                                        // Specific checks first
+                                        if (t.color?.includes('sky-200')) return { bg: 'bg-sky-200', text: 'text-sky-700', border: 'border-sky-300', light: 'bg-sky-50' };
+                                        if (t.color?.includes('cyan-400')) return { bg: 'bg-cyan-400', text: 'text-cyan-700', border: 'border-cyan-500', light: 'bg-cyan-50' };
+                                        if (t.color?.includes('blue-300')) return { bg: 'bg-blue-300', text: 'text-blue-700', border: 'border-blue-400', light: 'bg-blue-50' };
+                                        if (t.color?.includes('blue-200')) return { bg: 'bg-blue-200', text: 'text-blue-600', border: 'border-blue-300', light: 'bg-blue-50' };
+
+                                        // Audit/Zone
+                                        if (t.type === 'ZONE' || t.color?.includes('purple') || t.color?.includes('red')) return { bg: 'bg-red-600', text: 'text-red-600', border: 'border-red-400', light: 'bg-red-50' };
+                                        if (t.type === 'AUDIT' || t.type === 'CRISIS' || t.color?.includes('black')) {
+                                            if (t.color?.includes('red')) return { bg: 'bg-red-600', text: 'text-red-600', border: 'border-red-600', light: 'bg-red-50' };
+                                            return { bg: 'bg-gray-900', text: 'text-gray-800', border: 'border-gray-700', light: 'bg-gray-100' };
+                                        }
+
+                                        // Fallback Colors
                                         if (t.color?.includes('orange')) return { bg: 'bg-orange-500', text: 'text-orange-600', border: 'border-orange-400', light: 'bg-orange-50' };
                                         if (t.color?.includes('green')) return { bg: 'bg-green-600', text: 'text-green-600', border: 'border-green-400', light: 'bg-green-50' };
-                                        if (t.color?.includes('blue')) return { bg: 'bg-blue-600', text: 'text-blue-600', border: 'border-blue-400', light: 'bg-blue-50' };
-                                        if (t.color?.includes('red')) return { bg: 'bg-red-600', text: 'text-red-600', border: 'border-red-400', light: 'bg-red-50' };
                                         if (t.color?.includes('pink')) return { bg: 'bg-pink-500', text: 'text-pink-600', border: 'border-pink-400', light: 'bg-pink-50' };
+                                        if (t.color?.includes('blue')) return { bg: 'bg-blue-600', text: 'text-blue-600', border: 'border-blue-400', light: 'bg-blue-50' };
 
                                         return { bg: 'bg-blue-600', text: 'text-blue-600', border: 'border-blue-600', light: 'bg-blue-50' };
                                     };
@@ -894,11 +907,12 @@ export default function Dashboard({ properties }: PageProps) {
                                     const colors = getTileColors(curTile);
 
                                     return (
-                                        <div className={`flex flex-col items-center gap-1 ${colors.light} backdrop-blur-md px-8 py-4 rounded-2xl shadow-2xl border-4 ${colors.border} transition-all duration-500`}>
-                                            {/* Current Player Name */}
-                                            <div className="flex items-center gap-2 mb-1">
+                                        <div className={`flex flex-row items-center justify-between gap-4 ${colors.light} px-6 py-2 rounded-full border-[3px] ${colors.border} transition-all duration-500 scale-90 origin-top-left min-w-[320px]`}>
+
+                                            {/* Player Info */}
+                                            <div className="flex flex-col items-center min-w-[70px]">
                                                 <span
-                                                    className="text-white px-2 py-0.5 rounded text-xs font-bold shadow-sm"
+                                                    className="text-white px-2 py-0.5 rounded text-[0.65rem] font-bold shadow-sm mb-0.5"
                                                     style={{
                                                         backgroundColor: curPlayer.color === 'red' ? '#dc2626' :
                                                             curPlayer.color === 'blue' ? '#2563eb' :
@@ -910,30 +924,35 @@ export default function Dashboard({ properties }: PageProps) {
                                                 >
                                                     P{(turn % players.length) + 1}
                                                 </span>
-                                                <span className="text-2xl font-black italic uppercase tracking-tight text-black drop-shadow-sm">
+                                                <span className="text-sm font-black italic uppercase tracking-tight text-black leading-none">
                                                     {curPlayer.name}
                                                 </span>
                                             </div>
 
+                                            {/* Divider */}
+                                            <div className="w-px h-8 bg-black/10"></div>
+
                                             {/* Zone/Tile Info */}
-                                            <div className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white/60 border-2 border-white/50 shadow-sm`}>
-                                                {/* Icon based on theme/type */}
-                                                <div className={`${colors.text}`}>
+                                            <div className="flex flex-col items-center justify-center text-center max-w-[140px]">
+                                                <div className={`${colors.text} mb-0.5`}>
                                                     {(curTile.type === 'EVENT' || curTile.color?.includes('yellow')) ? (
-                                                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17H12.01" stroke="currentColor" strokeWidth="4" strokeLinecap="round" /><path d="M9.09 9C9.32 8.33 9.79 7.76 10.4 7.41C11 7 11.7 6.9 12.4 7C13.1 7.15 13.7 7.5 14.2 8C14.6 8.6 14.9 9.3 14.9 10C14.9 12 11.9 13 11.9 13" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>
+                                                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17H12.01" stroke="currentColor" strokeWidth="4" strokeLinecap="round" /><path d="M9.09 9C9.32 8.33 9.79 7.76 10.4 7.41C11 7 11.7 6.9 12.4 7C13.1 7.15 13.7 7.5 14.2 8C14.6 8.6 14.9 9.3 14.9 10C14.9 12 11.9 13 11.9 13" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>
                                                     ) : (
-                                                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                                                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
                                                     )}
                                                 </div>
-                                                <span className={`text-sm font-black uppercase tracking-wide leading-none ${colors.text}`}>
+                                                <span className={`text-[0.6rem] font-black uppercase tracking-wide leading-tight ${colors.text} line-clamp-2`}>
                                                     {curTile.name}
                                                 </span>
                                             </div>
 
+                                            {/* Divider */}
+                                            <div className="w-px h-8 bg-black/10"></div>
+
                                             {/* Liquidity */}
-                                            <div className="flex items-center gap-2 pt-2 mt-2 border-t border-black/10 w-full justify-center">
-                                                <span className="text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest">Liquidity:</span>
-                                                <span className="text-3xl font-mono font-black text-green-700 tracking-tight drop-shadow-sm">Rp 500<span className="text-lg">M</span></span>
+                                            <div className="flex flex-col items-center min-w-[80px]">
+                                                <span className="text-[0.5rem] font-bold text-gray-500 uppercase tracking-widest">CASH</span>
+                                                <span className="text-lg font-mono font-black text-green-700 leading-none mt-0.5">Rp 500<span className="text-xs">M</span></span>
                                             </div>
                                         </div>
                                     );
@@ -1180,14 +1199,7 @@ export default function Dashboard({ properties }: PageProps) {
                                         `}
                                 >
                                     { /* Header - Color Bar */}
-                                    <div className={`absolute top-0 inset-x-0 h-[28%] flex items-center justify-center z-10 ${tile.type === 'AUDIT' ? 'bg-red-600' :
-                                        tile.type === 'CRISIS' ? 'bg-red-600' :
-                                            tile.color === 'bg-black' ? 'bg-red-600' :
-                                                tile.type === 'PROPERTY' ? tile.color || 'bg-blue-600' :
-                                                    tile.type === 'EVENT' ? 'bg-yellow-500' :
-                                                        tile.type === 'ZONE' ? 'bg-purple-600' :
-                                                            'bg-blue-700'
-                                        } ${isCorner ? 'rounded-t-lg' : 'rounded-t'}`}>
+                                    <div className={`absolute top-0 inset-x-0 h-[28%] flex items-center justify-center z-10 ${tile.color || 'bg-blue-600'} ${isCorner ? 'rounded-t-lg' : 'rounded-t'}`}>
                                         <span className={`px-1 text-center ${isCorner ? 'text-[0.7rem] font-extrabold' : 'text-[0.55rem] font-black'} uppercase tracking-tight leading-none text-white drop-shadow-lg`}>
                                             {tile.name}
                                         </span>
