@@ -399,7 +399,24 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
 
                                 // Check Landing Animation (Static Highlight)
                                 if (landingTile === tile.index) {
-                                    return `z-[60] ring-4 ring-yellow-400 !shadow-[0_0_20px_rgba(250,204,21,0.5)] scale-105 bg-yellow-50`;
+                                    // Determine color based on the player who just landed (previous turn)
+                                    // calculate strictly based on who is AT the tile right now to be safe
+                                    const landedPlayer = players.find(p => p.position === tile.index);
+                                    let landRing = 'ring-yellow-400';
+                                    let landShadow = 'rgba(250,204,21,0.5)';
+
+                                    if (landedPlayer) {
+                                        switch (landedPlayer.color) {
+                                            case 'red': landRing = 'ring-red-500'; landShadow = 'rgba(239,68,68,0.5)'; break;
+                                            case 'blue': landRing = 'ring-blue-500'; landShadow = 'rgba(59,130,246,0.5)'; break;
+                                            case 'green': landRing = 'ring-green-500'; landShadow = 'rgba(34,197,94,0.5)'; break;
+                                            case 'yellow': landRing = 'ring-yellow-400'; landShadow = 'rgba(250,204,21,0.5)'; break;
+                                            case 'orange': landRing = 'ring-orange-500'; landShadow = 'rgba(249,115,22,0.5)'; break;
+                                            case 'purple': landRing = 'ring-purple-500'; landShadow = 'rgba(168,85,247,0.5)'; break;
+                                        }
+                                    }
+
+                                    return `z-[60] ring-4 ${landRing} !shadow-[0_0_20px_${landShadow}] scale-105 bg-yellow-50`;
                                 }
 
                                 return '';
@@ -407,13 +424,21 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                             `}
                     >
                         { /* Header - Color Bar (Only for Properties) */}
-                        {!(tile.color?.includes('yellow') || tile.color?.includes('black') || tile.color?.includes('red') || tile.type === 'EVENT' || tile.type === 'ZONE' || tile.type === 'AUDIT' || tile.type === 'CRISIS' || tile.type === 'START' || tile.type === 'JAIL') && (
-                            <div className={`absolute top-0 inset-x-0 h-[28%] flex items-center justify-center z-10 ${tile.color || 'bg-blue-600'}`}>
-                                <span className={`px-1 text-center ${isCorner ? 'text-[0.7rem] font-extrabold' : 'text-[0.55rem] font-black'} uppercase tracking-tight leading-none text-white drop-shadow-lg`}>
-                                    {tile.name}
-                                </span>
-                            </div>
-                        )}
+                        { /* Header - Color Bar (Only for Properties) */}
+                        {
+                            (() => {
+                                const isFullColor = tile.color?.includes('yellow') || tile.color?.includes('black') || tile.color?.includes('red') || tile.type === 'EVENT' || tile.type === 'ZONE' || tile.type === 'AUDIT' || tile.type === 'CRISIS' || tile.type === 'START' || tile.type === 'JAIL';
+                                if (isFullColor) return null;
+
+                                return (
+                                    <div className={`absolute top-0 inset-x-0 h-[28%] flex items-center justify-center z-10 ${tile.color || 'bg-blue-600'}`}>
+                                        <span className={`px-1 text-center ${isCorner ? 'text-[0.7rem] font-extrabold' : 'text-[0.55rem] font-black'} uppercase tracking-tight leading-none ${tile.textColor || 'text-white'} drop-shadow-sm`}>
+                                            {tile.name}
+                                        </span>
+                                    </div>
+                                );
+                            })()
+                        }
 
                         { /* Background - Logic Full Color vs White (Override Black to Slate-900) */}
                         <div className={`absolute inset-0 z-0 ${(tile.color?.includes('yellow') || tile.color?.includes('black') || tile.color?.includes('red') || tile.type === 'EVENT' || tile.type === 'ZONE' || tile.type === 'AUDIT' || tile.type === 'CRISIS' || tile.type === 'START' || tile.type === 'JAIL') ? (tile.color === 'bg-black' ? 'bg-slate-900' : tile.color) : 'bg-white'}`}></div>
@@ -477,7 +502,7 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                                         // PROPERTY -> House
                                         if (tile.type === 'PROPERTY') {
                                             return (
-                                                <img src="https://img.icons8.com/color/96/home.png" className="w-8 h-8 object-contain opacity-90 group-hover:opacity-100" alt="Property" />
+                                                <img src="https://img.icons8.com/color/96/home.png" className="w-6 h-6 object-contain opacity-90 group-hover:opacity-100" alt="Property" />
                                             );
                                         }
                                         return null;
@@ -485,7 +510,7 @@ const ActiveGame: React.FC<ActiveGameProps> = (props) => {
                                 </div>
 
                                 {tile.subName && (
-                                    <span className="text-[0.42rem] font-black leading-[0.85] whitespace-normal px-0.5 uppercase tracking-tight block w-full line-clamp-2 opacity-90">
+                                    <span className="text-[0.38rem] font-bold leading-tight whitespace-normal px-0.5 uppercase tracking-tight block w-full line-clamp-2 opacity-90 pb-0.5">
                                         {tile.subName.replace(/\n/g, ' ')}
                                     </span>
                                 )}
